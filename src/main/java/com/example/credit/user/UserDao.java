@@ -1,4 +1,4 @@
-package com.example.credit.customer;
+package com.example.credit.user;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

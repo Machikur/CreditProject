@@ -19,5 +19,4 @@ public class Quotes {
     private Rates rates;
 
 
-
 }

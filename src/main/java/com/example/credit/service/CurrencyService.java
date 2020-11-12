@@ -19,6 +19,9 @@ public class CurrencyService {
     }
 
     public double getExchangeRate(Currency from, Currency to) {
+        if (from.equals(to)) {
+            return 1.00;
+        }
         return currencyClient.getActualExchangeRates(from).getRates().getRate(to);
     }
 

@@ -1,8 +1,8 @@
 package com.example.credit.controller;
 
-import com.example.credit.customer.UserDto;
 import com.example.credit.exception.UserNotFoundException;
 import com.example.credit.facade.UserFacade;
+import com.example.credit.user.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

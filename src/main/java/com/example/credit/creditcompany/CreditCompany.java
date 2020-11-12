@@ -1,7 +1,7 @@
 package com.example.credit.creditcompany;
 
 import com.example.credit.bank.Account;
-import com.example.credit.customer.Status;
+import com.example.credit.user.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

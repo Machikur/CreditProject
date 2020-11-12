@@ -1,7 +1,7 @@
 package com.example.credit.mapper;
 
-import com.example.credit.customer.User;
-import com.example.credit.customer.UserDto;
+import com.example.credit.user.User;
+import com.example.credit.user.UserDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +12,7 @@ public class UserMapper {
                 user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
-                user.getMail(),
+                user.getMailAdress(),
                 user.getAccounts(),
                 user.getMonthlyEarnings()
         );
@@ -21,7 +21,7 @@ public class UserMapper {
     public User mapToUser(UserDto userDto) {
         return new User(userDto.getFirstName(),
                 userDto.getLastName(),
-                userDto.getMail(),
+                userDto.getMailAddress(),
                 userDto.getAccounts(),
                 userDto.getMonthlyEarnings());
     }

@@ -1,8 +1,8 @@
 package com.example.credit.service;
 
-import com.example.credit.customer.User;
-import com.example.credit.customer.UserDao;
 import com.example.credit.exception.UserNotFoundException;
+import com.example.credit.user.User;
+import com.example.credit.user.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class UserService {
         userDao.delete(user);
     }
 
-    public boolean existById(Long id){
+    public boolean existById(Long id) {
         return userDao.existsById(id);
     }
 

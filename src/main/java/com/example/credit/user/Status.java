@@ -1,4 +1,4 @@
-package com.example.credit.customer;
+package com.example.credit.user;
 
 public enum Status {
     VIP("VIP"), STANDARD("STANDARD"), NEW("NEW");

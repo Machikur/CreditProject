@@ -1,10 +1,10 @@
 package com.example.credit.facade;
 
-import com.example.credit.customer.User;
-import com.example.credit.customer.UserDto;
 import com.example.credit.exception.UserNotFoundException;
 import com.example.credit.mapper.UserMapper;
 import com.example.credit.service.UserService;
+import com.example.credit.user.User;
+import com.example.credit.user.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,8 +31,9 @@ public class UserFacade {
     public String deleteUser(Long userId) throws UserNotFoundException {
         User user = userService.findById(userId);
         userService.deleteUser(user);
-        log.info("Uzytkownik z id:" + userId + ", został usunięty");
-        return "Uzytkownik z id:" + userId + ", został usunięty";
+        String message = "Uzytkownik z id:" + userId + ", został usunięty";
+        log.info(message);
+        return message;
     }
 
     public UserDto getUserById(Long userId) throws UserNotFoundException {
@@ -40,7 +41,7 @@ public class UserFacade {
     }
 
     public UserDto updateUser(UserDto userDto) throws UserNotFoundException {
-        if (userService.existById(userDto.getId())) {
+        if (!userService.existById(userDto.getId())) {
             throw new UserNotFoundException();
         }
         User user = userMapper.mapToUser(userDto);

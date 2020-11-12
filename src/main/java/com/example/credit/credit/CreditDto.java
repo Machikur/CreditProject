@@ -1,8 +1,5 @@
 package com.example.credit.credit;
 
-import com.example.credit.creditcompany.CreditCompany;
-import com.example.credit.customer.User;
-
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Date;

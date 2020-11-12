@@ -1,7 +1,5 @@
 package com.example.credit.bank;
 
-import com.example.credit.customer.User;
-
 import java.math.BigDecimal;
 
 public class AccountDto {

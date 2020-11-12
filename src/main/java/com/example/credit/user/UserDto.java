@@ -1,4 +1,4 @@
-package com.example.credit.customer;
+package com.example.credit.user;
 
 import com.example.credit.bank.Account;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ public class UserDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private String mail;
+    private String mailAddress;
     private List<Account> accounts;
     private Double monthlyEarnings;
 }

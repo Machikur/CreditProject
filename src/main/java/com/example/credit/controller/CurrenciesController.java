@@ -1,8 +1,8 @@
 package com.example.credit.controller;
 
 import com.example.credit.bank.Currency;
-import com.example.credit.service.CurrencyService;
 import com.example.credit.client.Quotes;
+import com.example.credit.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,7 @@ public class CurrenciesController {
     }
 
     @GetMapping("/exchangeQuote")
-    public BigDecimal getExcahngeQuote(@RequestParam Currency from, @RequestParam Currency to, @RequestParam BigDecimal quote) {
+    public BigDecimal getExchangeQuote(@RequestParam Currency from, @RequestParam Currency to, @RequestParam BigDecimal quote) {
         return currencyService.getExchangeQuote(from, to, quote);
     }
 
