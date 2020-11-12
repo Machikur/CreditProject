@@ -24,7 +24,7 @@ public class User {
     private String mail;
     @OneToMany(
             targetEntity = Account.class,
-            cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
     )
     private List<Account> accounts;
 

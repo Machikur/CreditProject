@@ -1,7 +1,7 @@
 package com.example.credit.customer;
 
 public enum Status {
-    VIP("VIP"),STANDARD("STANDARD"),NEW("NEW");
+    VIP("VIP"), STANDARD("STANDARD"), NEW("NEW");
 
     private String desc;
 
