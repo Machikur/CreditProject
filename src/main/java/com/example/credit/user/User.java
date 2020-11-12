@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -32,21 +31,21 @@ public class User {
 
     @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @NotBlank
-    private String mailAdress;
+    private String mailAddress;
 
     @OneToMany(
             targetEntity = Account.class,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-    )
+            cascade = CascadeType.ALL)
     private List<Account> accounts;
 
-    @NotNull
+    @NotBlank
+    @Size(min = 0)
     private Double monthlyEarnings;
 
-    public User(String firstName, String lastName, String mailAdress, List<Account> accounts, Double monthlyEarnings) {
+    public User(String firstName, String lastName, String mailAddress, List<Account> accounts, Double monthlyEarnings) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.mailAdress = mailAdress;
+        this.mailAddress = mailAddress;
         this.accounts = accounts;
         this.monthlyEarnings = monthlyEarnings;
     }

@@ -27,9 +27,9 @@ public class AccountService {
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < 26; i++) {
-            stringBuilder.append(random.nextInt(10) - 1);
-            if (i % 4 == 0) {
-                stringBuilder.append("");
+            stringBuilder.append(random.nextInt(9));
+            if (((i+3) % 4 == 0||i==1)&&i!=25) {
+                stringBuilder.append(" ");
             }
         }
         return stringBuilder.toString();

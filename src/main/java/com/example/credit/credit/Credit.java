@@ -42,5 +42,17 @@ public class Credit {
 
     private boolean isFinished = false;
 
+    public Credit(User user, BigDecimal amountToPay, Currency currency, LocalDate finishTime) {
+        this.user = user;
+        this.amountToPay = amountToPay;
+        this.currency = currency;
+        this.finishTime = finishTime;
+    }
 
+    public void makePayment(BigDecimal amount) {
+        amountPaid = amountPaid.add(amount);
+        if (amountToPay.compareTo(amountPaid) <= 0) {
+            isFinished = true;
+        }
+    }
 }

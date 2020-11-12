@@ -1,15 +1,21 @@
 package com.example.credit.credit;
 
-import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Currency;
+
+@AllArgsConstructor
+@Getter
 public class CreditDto {
     private Long id;
     private Long userId;
-    private int creditCompanyID;
     private BigDecimal amountToPay;
     private BigDecimal amountPaid;
-    private Date finalDate;
     private Currency currency;
+    private LocalDate finishDate;
+    private LocalDate startTime;
+    private boolean isFinished;
 }

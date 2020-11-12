@@ -23,8 +23,8 @@ public class Rates {
     @JsonProperty("USD")
     private double USD;
 
-    public double getRate(Currency to) {
-        switch (to) {
+    public double getRate(Currency currency) {
+        switch (currency) {
             case GBP:
                 return this.GBP;
             case PLN:

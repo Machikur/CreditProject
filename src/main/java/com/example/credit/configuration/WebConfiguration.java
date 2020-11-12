@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 @Configuration
 public class WebConfiguration extends WebMvcConfigurationSupport {
+
     @Override
     public FormattingConversionService mvcConversionService() {
         FormattingConversionService f = super.mvcConversionService();

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/v1")
-public class CurrenciesController {
+public class CurrencyController {
 
 
     @Autowired
