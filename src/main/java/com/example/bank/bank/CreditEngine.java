@@ -1,7 +1,5 @@
-package com.example.bank.service;
+package com.example.bank.bank;
 
-import com.example.bank.bank.CreditType;
-import com.example.bank.bank.Status;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

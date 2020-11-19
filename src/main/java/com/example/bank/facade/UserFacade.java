@@ -3,6 +3,7 @@ package com.example.bank.facade;
 import com.example.bank.domain.User;
 import com.example.bank.dto.UserDto;
 import com.example.bank.exception.UserNotFoundException;
+import com.example.bank.exception.UserOperationException;
 import com.example.bank.mapper.UserMapper;
 import com.example.bank.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 
 @Service
 @Slf4j
@@ -32,8 +34,11 @@ public class UserFacade {
         return userMapper.mapToUserDto(user);
     }
 
-    public String deleteUser(Long userId) throws UserNotFoundException {
+    public String deleteUser(Long userId) throws UserNotFoundException, UserOperationException {
         User user = userService.findById(userId);
+        if (checkIfCreditsAndAccountsAreDone(user)) {
+            throw new UserOperationException("Użytkownik ma niespłacone kredyty lub pozostały mu pieniądze na koncie");
+        }
         userService.deleteUser(user);
         String message = "Uzytkownik z id: " + userId + ", został usunięty";
         log.info(message);
@@ -54,5 +59,18 @@ public class UserFacade {
         userService.saveUser(user);
         log.info("Zaaktualizowano użytownika {} {}", user.getFirstName(), user.getLastName());
         return userMapper.mapToUserDto(user);
+    }
+
+    private boolean checkIfCreditsAndAccountsAreDone(User user) {
+        boolean clear = true;
+        if (!user.getCredits().isEmpty()) {
+            clear = user.getCredits().stream()
+                    .noneMatch(c -> !c.isFinished());
+        }
+        if (!user.getAccounts().isEmpty()) {
+            clear = user.getAccounts().stream()
+                    .noneMatch(a -> !a.getCashBalance().equals(BigDecimal.ZERO));
+        }
+        return clear;
     }
 }

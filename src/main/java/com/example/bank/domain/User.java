@@ -66,6 +66,10 @@ public class User {
         this.lastName = lastName;
         this.mailAddress = mailAddress;
         this.monthlyEarnings = monthlyEarnings;
+        this.accounts = new ArrayList<>();
+        this.credits = new ArrayList<>();
+        this.createDate = LocalDate.now();
+        updateStatus();
     }
 
     public void updateStatus() {
@@ -74,14 +78,6 @@ public class User {
         } else if (LocalDate.now().isBefore(createDate.plusDays(30))) {
             this.status = Status.NEW;
         } else status = Status.STANDARD;
-    }
-
-    @PrePersist
-    private void setStartFields() {
-        this.accounts = new ArrayList<>();
-        this.credits = new ArrayList<>();
-        this.createDate = LocalDate.now();
-        updateStatus();
     }
 
 

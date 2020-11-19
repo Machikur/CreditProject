@@ -32,7 +32,7 @@ public class Account {
 
     private BigDecimal cashBalance;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull
     private User user;
 
@@ -51,7 +51,7 @@ public class Account {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "accountFrom",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.LAZY
     )
     private List<Payment> paymentsFrom;
@@ -59,7 +59,7 @@ public class Account {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "accountTo",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
             fetch = FetchType.LAZY
     )
     private List<Payment> paymentsTo;
@@ -67,17 +67,13 @@ public class Account {
     public Account(User user, Currency currency) {
         this.user = user;
         this.currency = currency;
+        this.isOpen = true;
+        this.createTime = LocalDate.now();
+        this.cashBalance = BigDecimal.ZERO;
+        this.paymentsFrom = new ArrayList<>();
+        this.paymentsTo = new ArrayList<>();
     }
 
-
-    @PrePersist
-    private void setStartFields() {
-        isOpen = true;
-        createTime = LocalDate.now();
-        cashBalance = BigDecimal.ZERO;
-        paymentsFrom = new ArrayList<>();
-        paymentsTo = new ArrayList<>();
-    }
 
     public void depositMoney(BigDecimal quote) {
         cashBalance = cashBalance.add(quote);

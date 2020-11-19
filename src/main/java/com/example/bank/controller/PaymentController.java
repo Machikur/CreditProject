@@ -22,19 +22,18 @@ public class PaymentController {
         this.paymentFacade = paymentFacade;
     }
 
-
     @PostMapping("/payment")
-    public PaymentDto makePayment(@RequestBody PaymentDto paymentDto, int pinNumber) throws PaymentCreateException, AccountNotFoundException, AccountOperationException, CreditNotFoundException {
+    public PaymentDto makePayment(@RequestBody PaymentDto paymentDto, @RequestParam int pinNumber) throws PaymentCreateException, AccountNotFoundException, AccountOperationException, CreditNotFoundException {
         return paymentFacade.makePayment(paymentDto, pinNumber);
     }
 
     @GetMapping("/userPayments")
-    public List<PaymentDto> getListOfUserPayments(@RequestParam Long accountId) {
-       return null;
+    public List<PaymentDto> getListOfUserPayments(@RequestParam Long accountId) throws AccountNotFoundException {
+        return paymentFacade.getPaymentListOfUser(accountId);
     }
 
     @GetMapping("/accountPayments")
     public List<PaymentDto> getListOfAccountPayments(@RequestParam Long accountId) throws AccountNotFoundException {
-        return paymentFacade.getPaymentListOfUser(accountId);
+        return paymentFacade.getPaymentListOfAccount(accountId);
     }
 }

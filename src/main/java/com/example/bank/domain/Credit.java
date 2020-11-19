@@ -24,7 +24,7 @@ public class Credit {
     @GeneratedValue
     private Long id;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull
     private User user;
 
@@ -49,7 +49,7 @@ public class Credit {
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
-    private List<Payment> paymentsTo;
+    private List<Payment> paymentsFrom;
 
 
     public Credit(User user, BigDecimal amountToPay, Currency currency, LocalDate finishTime) {
@@ -57,6 +57,10 @@ public class Credit {
         this.amountToPay = amountToPay;
         this.currency = currency;
         this.finishTime = finishTime;
+        this.paymentsFrom = new ArrayList<>();
+        this.amountPaid = BigDecimal.ZERO;
+        this.startTime = LocalDate.now();
+        this.isFinished = false;
     }
 
     public void makePayment(BigDecimal amount) {
@@ -66,11 +70,4 @@ public class Credit {
         }
     }
 
-    @PrePersist
-    private void setStartFields() {
-        this.paymentsTo = new ArrayList<>();
-        this.amountPaid = BigDecimal.ZERO;
-        this.startTime = LocalDate.now();
-        this.isFinished = false;
-    }
 }

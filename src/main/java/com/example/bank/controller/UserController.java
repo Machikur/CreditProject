@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.dto.UserDto;
 import com.example.bank.exception.UserNotFoundException;
+import com.example.bank.exception.UserOperationException;
 import com.example.bank.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user")
-    public String deleteUser(@RequestParam Long userId) throws UserNotFoundException {
+    public String deleteUser(@RequestParam Long userId) throws UserNotFoundException, UserOperationException {
         return userFacade.deleteUser(userId);
     }
 

@@ -1,4 +1,4 @@
-package com.example.bank.domain;
+package com.example.bank.dto;
 
 import com.example.bank.bank.CreditType;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Getter
-public class CreditOptions {
+public class CreditOptionsDto {
     private BigDecimal maxQuote;
     private List<CreditType> availableCreditTypes;
 }

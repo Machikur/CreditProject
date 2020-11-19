@@ -17,16 +17,16 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public Account saveAccount(Account account) {
-        return accountDao.save(account);
+    public void saveAccount(Account account) {
+        accountDao.save(account);
     }
 
     public Account findAccount(Long accountId) throws AccountNotFoundException {
         return accountDao.findById(accountId).orElseThrow(AccountNotFoundException::new);
     }
 
-    public Account findAccountByAccountNumber(String accountNumber) throws AccountNotFoundException {
-        return accountDao.findByAccountNumber(accountNumber).orElseThrow(AccountNotFoundException::new);
+    public boolean existById(Long accountId) {
+        return accountDao.existsById(accountId);
     }
 
     public void deleteAccount(Account account) {

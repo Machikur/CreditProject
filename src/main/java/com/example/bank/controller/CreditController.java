@@ -2,6 +2,7 @@ package com.example.bank.controller;
 
 import com.example.bank.bank.CreditType;
 import com.example.bank.dto.CreditDto;
+import com.example.bank.dto.CreditOptionsDto;
 import com.example.bank.exception.AccountNotFoundException;
 import com.example.bank.exception.CreditCreateException;
 import com.example.bank.exception.CreditNotFoundException;
@@ -31,7 +32,6 @@ public class CreditController {
         return creditFacade.createCreditForUser(userId, accountId, quote, CreditType.findByKey(days));
     }
 
-
     @GetMapping("/credit")
     public CreditDto getCreditDetails(@RequestParam Long creditId) throws CreditNotFoundException {
         return creditFacade.getCredit(creditId);
@@ -48,7 +48,7 @@ public class CreditController {
     }
 
     @GetMapping("/userOptions")
-    public Object getOptionsForUser(@RequestParam Long userId) throws UserNotFoundException, AccountNotFoundException {
+    public CreditOptionsDto getOptionsForUser(@RequestParam Long userId) throws UserNotFoundException {
         return creditFacade.getOptionsForUser(userId);
     }
 

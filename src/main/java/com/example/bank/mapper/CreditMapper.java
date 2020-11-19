@@ -38,7 +38,7 @@ public class CreditMapper {
                 credit.getFinishTime(),
                 credit.getStartTime(),
                 credit.isFinished(),
-                paymentMapper.mapToDtoList(credit.getPaymentsTo()));
+                paymentMapper.mapToDtoList(credit.getPaymentsFrom()));
     }
 
     public List<CreditDto> mapToListDto(List<Credit> credits) {

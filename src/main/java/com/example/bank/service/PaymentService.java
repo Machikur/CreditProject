@@ -18,16 +18,17 @@ public class PaymentService {
         this.paymentDao = paymentDao;
     }
 
-    public Payment savePayment(Payment payment) {
-        return paymentDao.save(payment);
+    public void savePayment(Payment payment) {
+        paymentDao.save(payment);
     }
+
 
     public Payment findById(Long paymentId) throws PaymentNotFoundException {
         return paymentDao.findById(paymentId).orElseThrow(PaymentNotFoundException::new);
     }
 
-    public List<Payment> getAllPaymentsFromAccount(Long accountId) {
-        return paymentDao.getAllByAccountFromEquals(accountId);
+    public List<Payment> getAllAccountsPayments(Long accountId) {
+        return paymentDao.getAllByAccountFrom_IdEqualsOrAccountToIdEquals(accountId, accountId);
     }
 
 }

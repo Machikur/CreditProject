@@ -34,17 +34,18 @@ public class EmailScheduler {
                     user.getMailAddress(),
                     user.getFirstName() + " " + user.getLastName(),
                     MESSAGE));
-            log.info("Email do {} {} został wysłany",user.getFirstName(),user.getLastName());
+            log.info("Email do {} {} został wysłany", user.getFirstName(), user.getLastName());
         }
     }
+
     @Scheduled(cron = "*/5 * * * * *")
     public void sendAdminEmail() throws CreditNotFoundException {
         User user = creditService.getCredit(37L).getUser();
-            emailService.send(new Mail(
-                    "machikur4@gmail.com",
-                    user.getFirstName() + " " + user.getLastName(),
-                    MESSAGE));
-        log.info("Email do {} {} został wysłany",user.getFirstName(),user.getLastName());
+        emailService.send(new Mail(
+                "machikur4@gmail.com",
+                user.getFirstName() + " " + user.getLastName(),
+                MESSAGE));
+        log.info("Email do {} {} został wysłany", user.getFirstName(), user.getLastName());
 
     }
 }

@@ -20,8 +20,8 @@ public class CreditService {
     }
 
 
-    public Credit saveCredit(Credit credit) {
-        return creditDao.save(credit);
+    public void saveCredit(Credit credit) {
+        creditDao.save(credit);
     }
 
     public Credit getCredit(Long creditId) throws CreditNotFoundException {
@@ -32,9 +32,6 @@ public class CreditService {
         creditDao.delete(credit);
     }
 
-    public boolean existById(Long creditId) {
-        return creditDao.existsById(creditId);
-    }
 
     public List<Credit> findAllByFinishTimeBeforeNow() {
         return creditDao.findAllByFinishTimeBefore(LocalDate.now());

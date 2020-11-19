@@ -25,7 +25,7 @@ public class CurrencyClient {
 
 
     private URI getCurrenciesURI(Currency currency) {
-        if (currency.equals(Currency.EUR)){
+        if (currency.equals(Currency.EUR)) {
             return UriComponentsBuilder.fromHttpUrl(RATES_URL).build().encode().toUri();
         }
         return UriComponentsBuilder.fromHttpUrl(RATES_URL)

@@ -21,14 +21,14 @@ public class Payment {
     @GeneratedValue
     private Long paymentId;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     @NotNull
     private Account accountFrom;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Account accountTo;
 
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Credit credit;
 
     private Currency currency;

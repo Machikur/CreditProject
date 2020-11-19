@@ -3,9 +3,11 @@ package com.example.bank.facade;
 import com.example.bank.domain.Account;
 import com.example.bank.domain.Credit;
 import com.example.bank.domain.Payment;
-import com.example.bank.domain.User;
 import com.example.bank.dto.PaymentDto;
-import com.example.bank.exception.*;
+import com.example.bank.exception.AccountNotFoundException;
+import com.example.bank.exception.AccountOperationException;
+import com.example.bank.exception.CreditNotFoundException;
+import com.example.bank.exception.PaymentCreateException;
 import com.example.bank.mapper.PaymentMapper;
 import com.example.bank.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -49,26 +51,35 @@ public class PaymentFacade {
         if (paymentDto.getCreditId() != null) {
             Credit credit = creditService.getCredit(paymentDto.getCreditId());
             payToCredit(accountFrom, credit, paymentDto.getQuote());
-            credit.getPaymentsTo().add(payment);
+            credit.getPaymentsFrom().add(payment);
             payment.setCredit(credit);
+            creditService.saveCredit(credit);
             log.info("Przelano kwote {} {} na credyt o numerze id: {}", paymentDto.getQuote(), accountFrom.getCurrency(), credit.getId());
         } else if (paymentDto.getAccountToId() != null) {
             Account accountTo = accountService.findAccount(paymentDto.getAccountToId());
             payToAccount(accountFrom, accountTo, paymentDto.getQuote());
             payment.setAccountTo(accountTo);
+            accountService.saveAccount(accountTo);
             log.info("Przelano kwote {}{} na konto o numerze id: {}", paymentDto.getQuote(), accountFrom.getCurrency(), accountTo.getId());
         }
         log.info("Transakcja zakończona pomyślnie");
         accountFrom.getPaymentsFrom().add(payment);
-        paymentService.savePayment(payment);
         accountService.saveAccount(accountFrom);
         return paymentMapper.mapToPaymentDto(payment);
     }
 
-    public List<PaymentDto> getPaymentListOfUser(Long accounId) throws AccountNotFoundException {
-        Account account = accountService.findAccount(accounId);
-        List<Payment> list=account.getPaymentsFrom();
+    public List<PaymentDto> getPaymentListOfUser(Long userId) throws AccountNotFoundException {
+        Account account = accountService.findAccount(userId);
+        List<Payment> list = account.getPaymentsFrom();
         list.addAll(account.getPaymentsTo());
+        return paymentMapper.mapToDtoList(list);
+    }
+
+    public List<PaymentDto> getPaymentListOfAccount(Long accountId) throws AccountNotFoundException {
+        if (!accountService.existById(accountId)) {
+            throw new AccountNotFoundException();
+        }
+        List<Payment> list = paymentService.getAllAccountsPayments(accountId);
         return paymentMapper.mapToDtoList(list);
     }
 

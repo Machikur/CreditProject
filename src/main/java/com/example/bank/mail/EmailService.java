@@ -37,7 +37,7 @@ public class EmailService {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
-            messageHelper.setText(emailCreator.buildEmail(mail),true);
+            messageHelper.setText(emailCreator.buildEmail(mail), true);
         };
     }
 }

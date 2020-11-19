@@ -1,18 +1,18 @@
 package com.example.bank.facade;
 
+import com.example.bank.bank.CreditEngine;
 import com.example.bank.bank.CreditType;
 import com.example.bank.domain.Account;
 import com.example.bank.domain.Credit;
-import com.example.bank.domain.CreditOptions;
 import com.example.bank.domain.User;
 import com.example.bank.dto.CreditDto;
+import com.example.bank.dto.CreditOptionsDto;
 import com.example.bank.exception.AccountNotFoundException;
 import com.example.bank.exception.CreditCreateException;
 import com.example.bank.exception.CreditNotFoundException;
 import com.example.bank.exception.UserNotFoundException;
 import com.example.bank.mapper.CreditMapper;
 import com.example.bank.service.AccountService;
-import com.example.bank.service.CreditEngine;
 import com.example.bank.service.CreditService;
 import com.example.bank.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -84,9 +84,9 @@ public class CreditFacade {
         creditService.deleteCredit(credit);
     }
 
-    public CreditOptions getOptionsForUser(Long userId) throws UserNotFoundException {
+    public CreditOptionsDto getOptionsForUser(Long userId) throws UserNotFoundException {
         User user = userService.findById(userId);
-        return new CreditOptions(
+        return new CreditOptionsDto(
                 creditEngine.getMaxQuoteByAccountStatus(user.getStatus()),
                 creditEngine.checkAvailableCreditsTypeForAccount(user.getStatus()));
     }
