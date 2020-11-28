@@ -40,7 +40,7 @@ public class EmailSchedulerTest {
 
         emailScheduler.sendInformationEmail();
 
-        verify(emailService,times(1)).send(any());
+        verify(emailService, times(1)).send(any());
     }
 
 }

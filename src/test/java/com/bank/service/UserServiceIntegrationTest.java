@@ -1,9 +1,9 @@
 package com.bank.service;
 
-import com.bank.domain.User;
 import com.bank.client.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
+import com.bank.domain.User;
 import com.bank.exception.AccountNotFoundException;
 import com.bank.exception.CreditNotFoundException;
 import org.junit.Assert;

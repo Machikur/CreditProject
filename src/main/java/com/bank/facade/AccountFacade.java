@@ -5,6 +5,7 @@ import com.bank.domain.Account;
 import com.bank.domain.User;
 import com.bank.dto.AccountDto;
 import com.bank.exception.AccountNotFoundException;
+import com.bank.exception.AccountOperationException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.mapper.AccountMapper;
 import com.bank.service.AccountService;
@@ -55,11 +56,11 @@ public class AccountFacade {
         return accountMapper.mapToDtoList(user.getAccounts());
     }
 
-    public AccountDto depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
-        Account account = accountService.findAccount(accountId);
+    public boolean depositMoney(String accountNumber, BigDecimal quote) throws AccountNotFoundException {
+        Account account = accountService.findAccountByAccountNumber(accountNumber);
         account.depositMoney(quote);
         accountService.saveAccount(account);
-        return accountMapper.mapToAccountDto(account);
+        return true;
     }
 
     public Double getAllCashInCurrency(Long userId, Currency currency) throws UserNotFoundException {
@@ -69,6 +70,22 @@ public class AccountFacade {
                 .mapToDouble(a -> a.getCashBalance().doubleValue())
                 .sum();
 
+    }
+
+    public void deleteAccount(String accountNumber, int pinNumber) throws AccountNotFoundException {
+        Account account = accountService.findAccountByAccountNumberAndPin(accountNumber, pinNumber);
+        if (account.getCashBalance().compareTo(BigDecimal.ZERO) == 0) {
+            accountService.deleteAccount(account);
+            log.info("Konto o id: {} zostało usunięte",
+                    account.getId());
+        }
+    }
+
+    public boolean withdrawal(String accountNumber, BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
+        Account account = accountService.findAccountByAccountNumber(accountNumber);
+        account.withdrawMoney(quote);
+        accountService.saveAccount(account);
+        return true;
     }
 
     private String accountNumberCreator() {

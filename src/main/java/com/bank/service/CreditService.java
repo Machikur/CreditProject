@@ -1,8 +1,8 @@
 package com.bank.service;
 
 import com.bank.domain.Credit;
-import com.bank.repository.CreditDao;
 import com.bank.exception.CreditNotFoundException;
+import com.bank.repository.CreditDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

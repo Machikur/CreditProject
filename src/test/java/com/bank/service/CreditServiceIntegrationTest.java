@@ -1,8 +1,8 @@
 package com.bank.service;
 
+import com.bank.client.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
-import com.bank.client.Currency;
 import com.bank.exception.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;

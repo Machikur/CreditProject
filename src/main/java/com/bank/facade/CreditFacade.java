@@ -1,10 +1,13 @@
 package com.bank.facade;
 
+import com.bank.bank.CreditEngine;
 import com.bank.bank.CreditType;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.CreditDto;
+import com.bank.dto.CreditOptionsDto;
+import com.bank.exception.AccountNotFoundException;
 import com.bank.exception.CreditCreateException;
 import com.bank.exception.CreditNotFoundException;
 import com.bank.exception.UserNotFoundException;
@@ -12,9 +15,6 @@ import com.bank.mapper.CreditMapper;
 import com.bank.service.AccountService;
 import com.bank.service.CreditService;
 import com.bank.service.UserService;
-import com.bank.bank.CreditEngine;
-import com.bank.dto.CreditOptionsDto;
-import com.bank.exception.AccountNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,9 +62,11 @@ public class CreditFacade {
         credit.setCurrency(account.getCurrency());
         credit.setFinishTime(creditEngine.getFinishTime(creditType));
         user.getCredits().add(credit);
+        account.depositMoney(quote);
+        accountService.saveAccount(account);
         creditService.saveCredit(credit);
         log.info("Stworzono nowy kredyt dla uzytkownika {} o wartości {}",
-                user.getName(),  quote);
+                user.getName(), quote);
         return creditMapper.mapToCreditDto(credit);
     }
 

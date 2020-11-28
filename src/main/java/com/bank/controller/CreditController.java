@@ -1,10 +1,10 @@
 package com.bank.controller;
 
-import com.bank.exception.CreditCreateException;
 import com.bank.bank.CreditType;
 import com.bank.dto.CreditDto;
 import com.bank.dto.CreditOptionsDto;
 import com.bank.exception.AccountNotFoundException;
+import com.bank.exception.CreditCreateException;
 import com.bank.exception.CreditNotFoundException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.facade.CreditFacade;
@@ -51,6 +51,5 @@ public class CreditController {
     public CreditOptionsDto getOptionsForUser(@RequestParam Long userId) throws UserNotFoundException {
         return creditFacade.getOptionsForUser(userId);
     }
-
 
 }

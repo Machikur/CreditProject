@@ -1,8 +1,8 @@
 package com.bank.service;
 
 import com.bank.domain.Account;
-import com.bank.repository.AccountDao;
 import com.bank.exception.AccountNotFoundException;
+import com.bank.repository.AccountDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +23,14 @@ public class AccountService {
 
     public Account findAccount(Long accountId) throws AccountNotFoundException {
         return accountDao.findById(accountId).orElseThrow(AccountNotFoundException::new);
+    }
+
+    public Account findAccountByAccountNumberAndPin(String accountNumber, int pinNumber) throws AccountNotFoundException {
+        return accountDao.findByAccountNumberAndPinCode(accountNumber, pinNumber).orElseThrow(AccountNotFoundException::new);
+    }
+
+    public Account findAccountByAccountNumber(String accountNumber) throws AccountNotFoundException {
+        return accountDao.findByAccountNumber(accountNumber).orElseThrow(AccountNotFoundException::new);
     }
 
     public boolean existById(Long accountId) {

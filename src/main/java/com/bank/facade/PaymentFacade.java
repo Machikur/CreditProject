@@ -3,11 +3,9 @@ package com.bank.facade;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
 import com.bank.domain.Payment;
+import com.bank.domain.User;
 import com.bank.dto.PaymentDto;
-import com.bank.exception.AccountNotFoundException;
-import com.bank.exception.AccountOperationException;
-import com.bank.exception.CreditNotFoundException;
-import com.bank.exception.PaymentCreateException;
+import com.bank.exception.*;
 import com.bank.mapper.PaymentMapper;
 import com.bank.service.*;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -68,18 +67,20 @@ public class PaymentFacade {
         return paymentMapper.mapToPaymentDto(payment);
     }
 
-    public List<PaymentDto> getPaymentListOfUser(Long userId) throws AccountNotFoundException {
-        Account account = accountService.findAccount(userId);
-        List<Payment> list = account.getPaymentsFrom();
-        list.addAll(account.getPaymentsTo());
-        return paymentMapper.mapToDtoList(list);
+    public List<PaymentDto> getPaymentListOfUser(Long userId) throws UserNotFoundException {
+        User user = userService.findById(userId);
+        List<Account> list = user.getAccounts();
+        return list.stream()
+                .flatMap(s -> s.getPaymentsFrom().stream())
+                .map(paymentMapper::mapToPaymentDto)
+                .collect(Collectors.toList());
+
     }
 
-    public List<PaymentDto> getPaymentListOfAccount(Long accountId) throws AccountNotFoundException {
-        if (!accountService.existById(accountId)) {
-            throw new AccountNotFoundException();
-        }
-        List<Payment> list = paymentService.getAllAccountsPayments(accountId);
+    public List<PaymentDto> getPaymentListOfAccount(String accountNumber) throws AccountNotFoundException {
+        Account account = accountService.findAccountByAccountNumber(accountNumber);
+        List<Payment> list = account.getPaymentsFrom();
+        list.addAll(account.getPaymentsTo());
         return paymentMapper.mapToDtoList(list);
     }
 

@@ -1,9 +1,9 @@
 package com.bank.service;
 
-import com.bank.domain.Account;
-import com.bank.domain.User;
 import com.bank.client.Currency;
+import com.bank.domain.Account;
 import com.bank.domain.Payment;
+import com.bank.domain.User;
 import com.bank.exception.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;

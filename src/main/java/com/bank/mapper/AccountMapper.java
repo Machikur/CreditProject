@@ -22,7 +22,6 @@ public class AccountMapper {
     public AccountDto mapToAccountDto(Account account) {
         return new AccountDto(
                 account.getId(),
-                account.isOpen(),
                 account.getCashBalance(),
                 account.getUser().getId(),
                 account.getCurrency(),

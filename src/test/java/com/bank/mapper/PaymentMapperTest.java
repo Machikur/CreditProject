@@ -1,9 +1,9 @@
 package com.bank.mapper;
 
-import com.bank.domain.Account;
-import com.bank.dto.PaymentDto;
 import com.bank.client.Currency;
+import com.bank.domain.Account;
 import com.bank.domain.Payment;
+import com.bank.dto.PaymentDto;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +72,7 @@ public class PaymentMapperTest {
         payment.setAccountTo(accountTwo);
         payment.setCreateTime(LocalDateTime.of(1, 1, 1, 1, 1, 1));
 
-        List<Payment> payments = Arrays.asList(payment,payment,payment);
+        List<Payment> payments = Arrays.asList(payment, payment, payment);
         int size = payments.size();
 
         //when

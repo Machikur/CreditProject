@@ -32,8 +32,5 @@ public class CurrencyController {
         return currencyService.getExchangeQuote(from, to, quote);
     }
 
-    @GetMapping("/exchangeRate")
-    public double getExchangeRate(@RequestParam Currency from, @RequestParam Currency to) {
-        return currencyService.getExchangeRate(from, to);
-    }
+
 }

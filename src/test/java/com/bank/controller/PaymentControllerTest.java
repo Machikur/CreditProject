@@ -69,7 +69,7 @@ public class PaymentControllerTest {
         //when and then
         mockMvc.perform(get("/v1/userPayments")
                 .contentType(MediaType.APPLICATION_JSON)
-                 .param("userId", "1")
+                .param("userId", "1")
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[].size()", is(1)))

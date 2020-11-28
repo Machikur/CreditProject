@@ -114,8 +114,8 @@ public class CreditControllerTest {
         mockMvc.perform(get("/v1/userOptions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("userId", "1"))
-                .andExpect(jsonPath("$.maxQuote",is(BigDecimal.TEN.intValue())))
-                .andExpect(jsonPath("$.availableCreditTypes.size()",is(4)));
+                .andExpect(jsonPath("$.maxQuote", is(BigDecimal.TEN.intValue())))
+                .andExpect(jsonPath("$.availableCreditTypes.size()", is(4)));
     }
 
 

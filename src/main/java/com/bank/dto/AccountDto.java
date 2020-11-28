@@ -17,8 +17,6 @@ public class AccountDto {
 
     private Long id;
 
-    private boolean isOpen;
-
     private BigDecimal cashBalance;
 
     private Long userId;

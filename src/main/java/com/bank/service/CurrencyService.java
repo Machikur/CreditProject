@@ -1,7 +1,7 @@
 package com.bank.service;
 
-import com.bank.client.CurrencyClient;
 import com.bank.client.Currency;
+import com.bank.client.CurrencyClient;
 import com.bank.client.Quotes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,15 +22,15 @@ public class CurrencyService {
         return currencyClient.getActualExchangeRates(currency);
     }
 
-    public double getExchangeRate(Currency from, Currency to) {
+    public BigDecimal getExchangeQuote(Currency from, Currency to, BigDecimal quote) {
+        return quote.multiply(BigDecimal.valueOf(getExchangeRate(from, to)));
+    }
+
+    private double getExchangeRate(Currency from, Currency to) {
         if (from.equals(to)) {
             return 1.00;
         }
         return currencyClient.getActualExchangeRates(from).getRates().getRate(to);
-    }
-
-    public BigDecimal getExchangeQuote(Currency from, Currency to, BigDecimal quote) {
-        return quote.multiply(BigDecimal.valueOf(getExchangeRate(from, to)));
     }
 
 }

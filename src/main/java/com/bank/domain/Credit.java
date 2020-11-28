@@ -15,7 +15,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "CREDIT")
@@ -57,6 +56,13 @@ public class Credit {
         this.amountToPay = amountToPay;
         this.currency = currency;
         this.finishTime = finishTime;
+        this.paymentsFrom = new ArrayList<>();
+        this.amountPaid = BigDecimal.ZERO;
+        this.startTime = LocalDate.now();
+        this.isFinished = false;
+    }
+
+    public Credit() {
         this.paymentsFrom = new ArrayList<>();
         this.amountPaid = BigDecimal.ZERO;
         this.startTime = LocalDate.now();

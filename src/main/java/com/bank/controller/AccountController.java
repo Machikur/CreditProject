@@ -3,6 +3,7 @@ package com.bank.controller;
 import com.bank.client.Currency;
 import com.bank.dto.AccountDto;
 import com.bank.exception.AccountNotFoundException;
+import com.bank.exception.AccountOperationException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.facade.AccountFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,19 @@ public class AccountController {
         return accountFacade.getAllCashInCurrency(userId, currency);
     }
 
-    @PutMapping("/deposit")
-    public AccountDto depositMoney(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException {
-        return accountFacade.depositMoney(accountId, quote);
-
+    @PutMapping("account/deposit")
+    public boolean depositMoney(@RequestParam String accountNumber, @RequestParam BigDecimal quote) throws AccountNotFoundException {
+        return accountFacade.depositMoney(accountNumber, quote);
     }
+
+    @PutMapping("account/withdrawal")
+    public boolean withdrawal(@RequestParam String accountNumber, @RequestParam BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
+        return accountFacade.withdrawal(accountNumber, quote);
+    }
+
+    @DeleteMapping("/account")
+    public void deleteAccount(@RequestParam String accountNumber,@RequestParam int pinNumber) throws AccountNotFoundException {
+        accountFacade.deleteAccount(accountNumber, pinNumber);
+    }
+
 }

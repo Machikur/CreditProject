@@ -28,8 +28,6 @@ public class Account {
     @GeneratedValue
     private Long id;
 
-    private boolean isOpen;
-
     private BigDecimal cashBalance;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -67,13 +65,11 @@ public class Account {
     public Account(User user, Currency currency) {
         this.user = user;
         this.currency = currency;
-        this.isOpen = true;
         this.createTime = LocalDate.now();
         this.cashBalance = BigDecimal.ZERO;
         this.paymentsFrom = new ArrayList<>();
         this.paymentsTo = new ArrayList<>();
     }
-
 
     public void depositMoney(BigDecimal quote) {
         cashBalance = cashBalance.add(quote);
@@ -86,7 +82,6 @@ public class Account {
             cashBalance = cashBalance.subtract(quote);
             return quote;
         }
-
 
     }
 }

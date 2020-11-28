@@ -1,10 +1,7 @@
 package com.bank.controller;
 
 import com.bank.dto.PaymentDto;
-import com.bank.exception.AccountNotFoundException;
-import com.bank.exception.AccountOperationException;
-import com.bank.exception.CreditNotFoundException;
-import com.bank.exception.PaymentCreateException;
+import com.bank.exception.*;
 import com.bank.facade.PaymentFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +25,13 @@ public class PaymentController {
     }
 
     @GetMapping("/userPayments")
-    public List<PaymentDto> getListOfUserPayments(@RequestParam Long accountId) throws AccountNotFoundException {
-        return paymentFacade.getPaymentListOfUser(accountId);
+    public List<PaymentDto> getListOfUserPayments(@RequestParam Long userId) throws UserNotFoundException {
+        return paymentFacade.getPaymentListOfUser(userId);
     }
 
     @GetMapping("/accountPayments")
-    public List<PaymentDto> getListOfAccountPayments(@RequestParam Long accountId) throws AccountNotFoundException {
-        return paymentFacade.getPaymentListOfAccount(accountId);
+    public List<PaymentDto> getListOfAccountPayments(@RequestParam String accountNumber) throws AccountNotFoundException {
+        return paymentFacade.getPaymentListOfAccount(accountNumber);
     }
+
 }

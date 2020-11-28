@@ -1,6 +1,8 @@
 package com.bank.facade;
 
 import com.bank.client.Currency;
+import com.bank.domain.Account;
+import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.UserDto;
 import com.bank.exception.UserNotFoundException;
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -63,24 +68,24 @@ public class UserFacade {
         return userMapper.mapToUserDto(user);
     }
 
-    public double getAllCashBalance(Long userId, Currency currency) throws UserNotFoundException {
-        User user = userService.findById(userId);
-        return user.getAccounts().stream()
-                .filter(a -> a.getCurrency().equals(currency))
-                .mapToDouble(a -> a.getCashBalance().doubleValue())
-                .sum();
-    }
 
+
+    public Collection<Currency> getListOfUsersCurrencies(Long userId) throws UserNotFoundException {
+        User user=userService.findById(userId);
+       return user.getAccounts().stream()
+                .map(Account::getCurrency)
+                .collect(Collectors.toSet());
+    }
 
     private boolean checkIfCreditsAndAccountsAreDone(User user) {
         boolean clear = true;
         if (!user.getCredits().isEmpty()) {
             clear = user.getCredits().stream()
-                    .noneMatch(c -> !c.isFinished());
+                    .allMatch(Credit::isFinished);
         }
         if (!user.getAccounts().isEmpty()) {
             clear = user.getAccounts().stream()
-                    .noneMatch(a -> !a.getCashBalance().equals(BigDecimal.ZERO));
+                    .allMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO)==0);
         }
         return clear;
     }

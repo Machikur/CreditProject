@@ -1,8 +1,8 @@
 package com.bank.controller;
 
+import com.bank.client.Currency;
 import com.bank.dto.AccountDto;
 import com.bank.facade.AccountFacade;
-import com.bank.client.Currency;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

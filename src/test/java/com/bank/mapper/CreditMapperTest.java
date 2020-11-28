@@ -1,9 +1,9 @@
 package com.bank.mapper;
 
+import com.bank.client.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.CreditDto;
-import com.bank.client.Currency;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
