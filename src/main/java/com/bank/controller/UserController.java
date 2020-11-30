@@ -42,8 +42,8 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public UserDto updateUser(@RequestBody UserDto userDto) throws UserNotFoundException {
-        return userFacade.updateUser(userDto);
+    public void updateUser(@RequestBody UserDto userDto) throws UserNotFoundException {
+         userFacade.updateUser(userDto);
     }
 
 }

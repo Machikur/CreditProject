@@ -28,10 +28,6 @@ public class AccountController {
         return accountFacade.createNewAccount(userId, currency);
     }
 
-    @GetMapping("/account")
-    public AccountDto getAccount(@RequestParam Long accountId) throws AccountNotFoundException {
-        return accountFacade.getAccount(accountId);
-    }
 
     @GetMapping("/accounts")
     public List<AccountDto> getAccountsByUser(@RequestParam Long userId) throws UserNotFoundException {
@@ -44,18 +40,18 @@ public class AccountController {
     }
 
     @PutMapping("account/deposit")
-    public boolean depositMoney(@RequestParam String accountNumber, @RequestParam BigDecimal quote) throws AccountNotFoundException {
-        return accountFacade.depositMoney(accountNumber, quote);
+    public boolean depositMoney(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException {
+        return accountFacade.depositMoney(accountId, quote);
     }
 
     @PutMapping("account/withdrawal")
-    public boolean withdrawal(@RequestParam String accountNumber, @RequestParam BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
-        return accountFacade.withdrawal(accountNumber, quote);
+    public boolean withdrawal(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
+        return accountFacade.withdrawal(accountId, quote);
     }
 
     @DeleteMapping("/account")
-    public void deleteAccount(@RequestParam String accountNumber,@RequestParam int pinNumber) throws AccountNotFoundException {
-        accountFacade.deleteAccount(accountNumber, pinNumber);
+    public void deleteAccount(@RequestParam Long accountId,@RequestParam int pinNumber) throws AccountNotFoundException {
+        accountFacade.deleteAccount(accountId, pinNumber);
     }
 
 }

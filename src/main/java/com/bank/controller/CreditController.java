@@ -51,5 +51,9 @@ public class CreditController {
     public CreditOptionsDto getOptionsForUser(@RequestParam Long userId) throws UserNotFoundException {
         return creditFacade.getOptionsForUser(userId);
     }
+    @GetMapping("credit/interest")
+    public Double countInterest(@RequestParam Long userId,@RequestParam int days) throws UserNotFoundException {
+        return creditFacade.countInterest(userId, days);
+    }
 
 }

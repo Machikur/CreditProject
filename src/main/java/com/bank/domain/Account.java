@@ -49,7 +49,7 @@ public class Account {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "accountFrom",
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     private List<Payment> paymentsFrom;
@@ -57,7 +57,7 @@ public class Account {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "accountTo",
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST},
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY
     )
     private List<Payment> paymentsTo;

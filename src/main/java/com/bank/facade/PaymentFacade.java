@@ -59,7 +59,7 @@ public class PaymentFacade {
             payToAccount(accountFrom, accountTo, paymentDto.getQuote());
             payment.setAccountTo(accountTo);
             accountService.saveAccount(accountTo);
-            log.info("Przelano kwote {}{} na konto o numerze id: {}", paymentDto.getQuote(), accountFrom.getCurrency(), accountTo.getId());
+            log.info("Przelano z konta o id {} kwote {}{} na konto o numerze id: {}",accountFrom.getId(), paymentDto.getQuote(), accountFrom.getCurrency(), accountTo.getId());
         }
         log.info("Transakcja zakończona pomyślnie");
         accountFrom.getPaymentsFrom().add(payment);

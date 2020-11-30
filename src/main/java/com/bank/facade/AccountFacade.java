@@ -51,13 +51,14 @@ public class AccountFacade {
         return accountMapper.mapToAccountDto(accountService.findAccount(accountId));
     }
 
+
     public List<AccountDto> getAccountsOfUser(Long userId) throws UserNotFoundException {
         User user = userService.findById(userId);
         return accountMapper.mapToDtoList(user.getAccounts());
     }
 
-    public boolean depositMoney(String accountNumber, BigDecimal quote) throws AccountNotFoundException {
-        Account account = accountService.findAccountByAccountNumber(accountNumber);
+    public boolean depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
+        Account account = accountService.findAccount(accountId);
         account.depositMoney(quote);
         accountService.saveAccount(account);
         return true;
@@ -72,17 +73,18 @@ public class AccountFacade {
 
     }
 
-    public void deleteAccount(String accountNumber, int pinNumber) throws AccountNotFoundException {
-        Account account = accountService.findAccountByAccountNumberAndPin(accountNumber, pinNumber);
-        if (account.getCashBalance().compareTo(BigDecimal.ZERO) == 0) {
+    public void deleteAccount(Long accountId, int pinNumber) throws AccountNotFoundException {
+        Account account = accountService.findAccount(accountId);
+        if (account.getPinCode() == pinNumber && account.getCashBalance().compareTo(BigDecimal.ZERO) == 0) {
             accountService.deleteAccount(account);
             log.info("Konto o id: {} zostało usunięte",
                     account.getId());
         }
+
     }
 
-    public boolean withdrawal(String accountNumber, BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
-        Account account = accountService.findAccountByAccountNumber(accountNumber);
+    public boolean withdrawal(Long accountId, BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
+        Account account = accountService.findAccount(accountId);
         account.withdrawMoney(quote);
         accountService.saveAccount(account);
         return true;

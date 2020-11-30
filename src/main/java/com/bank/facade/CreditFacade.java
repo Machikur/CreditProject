@@ -2,6 +2,7 @@ package com.bank.facade;
 
 import com.bank.bank.CreditEngine;
 import com.bank.bank.CreditType;
+import com.bank.bank.Status;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
@@ -56,7 +57,7 @@ public class CreditFacade {
             throw new CreditCreateException("Nie można udzielić kredytu dla wybranego statusu");
         }
         Credit credit = new Credit();
-        double interest = creditEngine.countInterest(user.getStatus(), creditType) / 100;
+        double interest = countInterest(user.getStatus(), creditType) / 100;
         credit.setAmountToPay(quote.add(quote.multiply(BigDecimal.valueOf(interest))));
         credit.setUser(user);
         credit.setCurrency(account.getCurrency());
@@ -64,7 +65,6 @@ public class CreditFacade {
         user.getCredits().add(credit);
         account.depositMoney(quote);
         accountService.saveAccount(account);
-        creditService.saveCredit(credit);
         log.info("Stworzono nowy kredyt dla uzytkownika {} o wartości {}",
                 user.getName(), quote);
         return creditMapper.mapToCreditDto(credit);
@@ -81,9 +81,19 @@ public class CreditFacade {
 
     public void deleteCredit(Long creditId) throws CreditNotFoundException {
         Credit credit = creditService.getCredit(creditId);
+        if (credit.isFinished()){
+            creditService.deleteCredit(credit);
         log.info("Usunieto kredyt użytkownika {}  o numerze id {}",
-                credit.getUser().getName(), creditId);
-        creditService.deleteCredit(credit);
+                credit.getUser().getName(), creditId);}
+    }
+
+    public double countInterest(Status status, CreditType creditType) {
+        return creditEngine.countInterest(status, creditType);
+    }
+
+    public double countInterest(Long userId, int days) throws UserNotFoundException {
+        User user= userService.findById(userId);
+        return creditEngine.countInterest(user.getStatus(), CreditType.findByKey(days));
     }
 
     public CreditOptionsDto getOptionsForUser(Long userId) throws UserNotFoundException {

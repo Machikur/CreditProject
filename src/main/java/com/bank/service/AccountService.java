@@ -25,9 +25,6 @@ public class AccountService {
         return accountDao.findById(accountId).orElseThrow(AccountNotFoundException::new);
     }
 
-    public Account findAccountByAccountNumberAndPin(String accountNumber, int pinNumber) throws AccountNotFoundException {
-        return accountDao.findByAccountNumberAndPinCode(accountNumber, pinNumber).orElseThrow(AccountNotFoundException::new);
-    }
 
     public Account findAccountByAccountNumber(String accountNumber) throws AccountNotFoundException {
         return accountDao.findByAccountNumber(accountNumber).orElseThrow(AccountNotFoundException::new);

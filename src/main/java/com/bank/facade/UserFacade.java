@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +41,7 @@ public class UserFacade {
 
     public String deleteUser(Long userId) throws UserNotFoundException, UserOperationException {
         User user = userService.findById(userId);
-        if (checkIfCreditsAndAccountsAreDone(user)) {
+        if (!checkIfCreditsAndAccountsAreDone(user)) {
             throw new UserOperationException("Użytkownik ma niespłacone kredyty lub pozostały mu pieniądze na koncie");
         }
         userService.deleteUser(user);
@@ -56,7 +55,7 @@ public class UserFacade {
         return userMapper.mapToUserDto(userService.findByNameAndPassword(name, password));
     }
 
-    public UserDto updateUser(UserDto userDto) throws UserNotFoundException {
+    public void updateUser(UserDto userDto) throws UserNotFoundException {
         User user = userService.findById(userDto.getId());
         user.setName(userDto.getName());
         user.setPassword(userDto.getPassword());
@@ -65,28 +64,35 @@ public class UserFacade {
         user.updateStatus();
         userService.saveUser(user);
         log.info("Zaaktualizowano użytownika {} ", user.getName());
-        return userMapper.mapToUserDto(user);
     }
 
 
-
     public Collection<Currency> getListOfUsersCurrencies(Long userId) throws UserNotFoundException {
-        User user=userService.findById(userId);
-       return user.getAccounts().stream()
+        User user = userService.findById(userId);
+        return user.getAccounts().stream()
                 .map(Account::getCurrency)
                 .collect(Collectors.toSet());
     }
 
     private boolean checkIfCreditsAndAccountsAreDone(User user) {
-        boolean clear = true;
+        boolean clearAccounts = true;
+        boolean clearCredits = true;
+
         if (!user.getCredits().isEmpty()) {
-            clear = user.getCredits().stream()
+            clearCredits = user.getCredits().stream()
                     .allMatch(Credit::isFinished);
         }
+
         if (!user.getAccounts().isEmpty()) {
-            clear = user.getAccounts().stream()
-                    .allMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO)==0);
+            clearAccounts = user.getAccounts().stream()
+                    .allMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO) == 0);
         }
-        return clear;
+
+        if (clearAccounts) {
+            return clearCredits;
+        } else {
+            return false;
+        }
     }
+
 }
