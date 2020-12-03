@@ -39,7 +39,7 @@ public class UserFacade {
         return userMapper.mapToUserDto(user);
     }
 
-    public String deleteUser(Long userId) throws UserNotFoundException, UserOperationException {
+    public void deleteUser(Long userId) throws UserNotFoundException, UserOperationException {
         User user = userService.findById(userId);
         if (!checkIfCreditsAndAccountsAreDone(user)) {
             throw new UserOperationException("Użytkownik ma niespłacone kredyty lub pozostały mu pieniądze na koncie");
@@ -47,7 +47,6 @@ public class UserFacade {
         userService.deleteUser(user);
         String message = "Uzytkownik z id: " + userId + ", został usunięty";
         log.info(message);
-        return message;
     }
 
 
@@ -61,7 +60,6 @@ public class UserFacade {
         user.setPassword(userDto.getPassword());
         user.setMailAddress(userDto.getMailAddress());
         user.setMonthlyEarnings(userDto.getMonthlyEarnings());
-        user.updateStatus();
         userService.saveUser(user);
         log.info("Zaaktualizowano użytownika {} ", user.getName());
     }
@@ -75,21 +73,10 @@ public class UserFacade {
     }
 
     private boolean checkIfCreditsAndAccountsAreDone(User user) {
-        boolean clearAccounts = true;
-        boolean clearCredits = true;
-
-        if (!user.getCredits().isEmpty()) {
-            clearCredits = user.getCredits().stream()
-                    .allMatch(Credit::isFinished);
-        }
-
-        if (!user.getAccounts().isEmpty()) {
-            clearAccounts = user.getAccounts().stream()
+        if (user.getCredits().stream()
+                .allMatch(Credit::isFinished)) {
+            return user.getAccounts().stream()
                     .allMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO) == 0);
-        }
-
-        if (clearAccounts) {
-            return clearCredits;
         } else {
             return false;
         }

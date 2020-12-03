@@ -19,8 +19,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Entity
+@Setter
 @Table(name = "ACCOUNT")
 public class Account {
 
@@ -49,8 +49,7 @@ public class Account {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "accountFrom",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL
     )
     private List<Payment> paymentsFrom;
 
@@ -84,4 +83,9 @@ public class Account {
         }
 
     }
+
+    private void setCashBalance(BigDecimal cashBalance) {
+        this.cashBalance = cashBalance;
+    }
+
 }

@@ -3,7 +3,6 @@ package com.bank.service;
 import com.bank.client.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
-import com.bank.exception.UserNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +21,15 @@ public class CreditServiceIntegrationTest {
     private final static String USER_LAST_NAME = "Kowalski";
     private final static String USER_EMAIL = "kowalski@Gmail.com";
     private final static Double USER_EARNINGS = 1000.0;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private CreditService creditService;
 
     @Test
-    public void shouldNotDeleteUser() throws UserNotFoundException {
+    public void shouldNotDeleteUser() {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Credit credit = new Credit(user, BigDecimal.TEN, Currency.EUR, LocalDate.now().plusDays(1));
@@ -38,10 +39,10 @@ public class CreditServiceIntegrationTest {
 
         //when
         creditService.deleteCredit(credit);
-        boolean isExists = userService.existById(userId);
+        boolean userIsExists = userService.existById(userId);
 
         //then
-        Assert.assertTrue(isExists);
+        Assert.assertTrue(userIsExists);
 
         //cleanUp
         userService.deleteUser(user);
@@ -56,10 +57,11 @@ public class CreditServiceIntegrationTest {
         userService.saveUser(user);
 
         //when
-        user.setFirstName("Marek");
+        user.setName("Marek");
         creditService.saveCredit(credit);
 
         //then
-        Assert.assertNotEquals(credit.getUser().getFirstName(), USER_NAME);
+        Assert.assertNotEquals(credit.getUser().getName(), USER_NAME);
     }
+
 }

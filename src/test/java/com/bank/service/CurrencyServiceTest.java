@@ -34,26 +34,6 @@ public class CurrencyServiceTest {
     }
 
     @Test
-    public void shouldReturnOne() {
-        //given and when
-        double result = currencyService.getExchangeRate(Currency.EUR, Currency.EUR);
-
-        //then
-        Assert.assertEquals(1, result, 0.1);
-
-    }
-
-    @Test
-    public void shouldReturnNotOne() {
-        //given and when
-        double result = currencyService.getExchangeRate(Currency.EUR, Currency.PLN);
-
-        //then
-        Assert.assertNotEquals(1, result, 0.1);
-
-    }
-
-    @Test
     public void shouldReturnNotNullRates() {
         //given and when
         Quotes quotes = currencyService.getActualExchangeRates(Currency.PLN);
@@ -79,4 +59,5 @@ public class CurrencyServiceTest {
         Assert.assertNotEquals(quote, quoteAfterChange);
 
     }
+
 }

@@ -27,10 +27,13 @@ public class UserServiceIntegrationTest {
     private final static Double USER_EARNINGS = 1000.0;
     private final static String ACCOUNT_NUMBER = "11 0000 0055 0022 2100 0000 0000";
     private final static int ACCOUNT_PIN_CODE = 1111;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private CreditService creditService;
 
@@ -53,9 +56,7 @@ public class UserServiceIntegrationTest {
         //cleanUp
         accountService.deleteAccount(account);
         userService.deleteUser(user);
-
     }
-
 
     @Test(expected = AccountNotFoundException.class)
     public void shouldDeleteUserAndAccount() throws AccountNotFoundException {
@@ -75,9 +76,6 @@ public class UserServiceIntegrationTest {
         //then expect AccountNotFoundException
         Assert.assertFalse(isExists);
         accountService.findAccount(accountId);
-
-        //cleanUp
-
     }
 
     @Test
@@ -114,6 +112,6 @@ public class UserServiceIntegrationTest {
 
         //then expect Exception
         creditService.getCredit(creditId);
-
     }
+
 }

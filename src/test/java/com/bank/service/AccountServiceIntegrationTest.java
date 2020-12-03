@@ -25,10 +25,13 @@ public class AccountServiceIntegrationTest {
     private final static Double USER_EARNINGS = 1000.0;
     private final static String ACCOUNT_NUMBER = "11 0000 0055 0022 2100 0000 0000";
     private final static int ACCOUNT_PIN_CODE = 1111;
+
     @Autowired
     private UserService userService;
+
     @Autowired
     private AccountService accountService;
+
     @Autowired
     private PaymentService paymentService;
 
@@ -42,6 +45,7 @@ public class AccountServiceIntegrationTest {
         user.setAccounts(Collections.singletonList(account));
         userService.saveUser(user);
         Long userId = user.getId();
+        System.out.println(userId);
 
         //when
         accountService.deleteAccount(account);
@@ -51,11 +55,11 @@ public class AccountServiceIntegrationTest {
         Assert.assertNotNull(userToCheck);
 
         //cleanUp
-        userService.deleteUser(userToCheck);
+        userService.deleteUser(userService.findById(userId));
     }
 
     @Test
-    public void shouldNotDeletePayment() {
+    public void shouldNotDeletePayment() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -76,11 +80,11 @@ public class AccountServiceIntegrationTest {
         Assert.assertNotNull(payment);
 
         //cleanUp
-        userService.deleteUser(user);
+        userService.deleteUser(userService.findById(user.getId()));
     }
 
     @Test
-    public void shouldSaveUserChanges() {
+    public void shouldSaveUserChanges() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -90,15 +94,19 @@ public class AccountServiceIntegrationTest {
         userService.saveUser(user);
 
         //when
-        user.setFirstName("Marek");
+        user.setName("Marek");
         accountService.saveAccount(account);
 
         ///then
-        Assert.assertNotEquals(account.getUser().getFirstName(), USER_NAME);
+        Assert.assertNotEquals(account.getUser().getName(), USER_NAME);
+
+        //cleanUp
+
+        userService.deleteUser(userService.findById(user.getId()));
     }
 
     @Test
-    public void shouldSavePaymentChanges() {
+    public void shouldSavePaymentChanges() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -107,21 +115,21 @@ public class AccountServiceIntegrationTest {
         user.setAccounts(Collections.singletonList(account));
         userService.saveUser(user);
         Payment payment = new Payment(Currency.EUR, BigDecimal.TEN);
-        account.getPaymentsFrom().add(payment);
+        account.getPaymentsTo().add(payment);
         payment.setAccountFrom(account);
+        payment.setAccountTo(account);
         accountService.saveAccount(account);
         paymentService.savePayment(payment);
 
         //when
         payment.setCurrency(Currency.GBP);
         accountService.saveAccount(account);
+
         //then
-        Assert.assertEquals(account.getPaymentsFrom().get(0).getCurrency(), Currency.GBP);
+        Assert.assertEquals(account.getPaymentsTo().get(0).getCurrency(), Currency.GBP);
 
         //cleanUp
-        userService.deleteUser(user);
-        accountService.deleteAccount(account);
+        userService.deleteUser(userService.findById(user.getId()));
     }
-
 
 }

@@ -24,8 +24,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(CreditController.class)
@@ -39,9 +38,6 @@ public class CreditControllerTest {
 
     @Test
     public void postMappingTest() throws Exception {
-        //given
-        CreditDto creditDto = getSimpleCreditDto();
-        when(creditFacade.createCreditForUser(any(), any(), any(), any())).thenReturn(creditDto);
 
         //when and then
         mockMvc.perform(post("/v1/credit")
@@ -51,28 +47,12 @@ public class CreditControllerTest {
                 .param("days", "1")
                 .characterEncoding("UTF-8")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.creditId", is(1)))
-                .andExpect(jsonPath("$.userId", is(1)))
-                .andExpect(jsonPath("$.finished", is(false)));
+                .andExpect(status().isOk());
+
+        verify(creditFacade, times(1)).createCreditForUser(anyLong(), anyLong(), any(), any());
 
     }
 
-    @Test
-    public void getMappingTest() throws Exception {
-        //given
-        CreditDto creditDto = getSimpleCreditDto();
-        when(creditFacade.getCredit(any())).thenReturn(creditDto);
-
-        //when and then\
-        mockMvc.perform(get("/v1/credit")
-                .param("creditId", "1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.creditId", is(1)))
-                .andExpect(jsonPath("$.finished", is(false)))
-                .andExpect(jsonPath("$.currency", is(Currency.PLN.getDesc())));
-    }
 
     @Test
     public void getUserCreditsTest() throws Exception {
@@ -89,11 +69,28 @@ public class CreditControllerTest {
                 .andExpect(jsonPath("$[0].creditId", is(1)))
                 .andExpect(jsonPath("$[0].finished", is(false)))
                 .andExpect(jsonPath("$[0].currency", is(Currency.PLN.getDesc())));
+
+        verify(creditFacade, times(1)).getCreditsForUser(anyLong());
+    }
+
+    @Test
+    public void getCreditInterestTest() throws Exception {
+        //given
+        when(creditFacade.countInterest(anyLong(), anyInt())).thenReturn(10.0);
+
+        //when and then\
+        mockMvc.perform(get("/v1/credit/interest")
+                .param("userId", "1")
+                .param("days", "1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string("10.0"));
+        verify(creditFacade, times(1)).countInterest(anyLong(), anyInt());
     }
 
     @Test
     public void deleteCreditTest() throws Exception {
-        //given
+
         //when and then\
         mockMvc.perform(delete("/v1/credit")
                 .param("creditId", "1")
@@ -107,15 +104,16 @@ public class CreditControllerTest {
     public void userOptionsTest() throws Exception {
         //given
         CreditOptionsDto creditOptionsDto = new CreditOptionsDto(BigDecimal.TEN, Arrays.asList(CreditType.values()));
-        when(creditFacade.getOptionsForUser(any())).thenReturn(creditOptionsDto);
+        when(creditFacade.getOptionsForUser(anyLong())).thenReturn(creditOptionsDto);
 
         //when and then
-
         mockMvc.perform(get("/v1/userOptions")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("userId", "1"))
                 .andExpect(jsonPath("$.maxQuote", is(BigDecimal.TEN.intValue())))
                 .andExpect(jsonPath("$.availableCreditTypes.size()", is(4)));
+
+        verify(creditFacade, (times(1))).getOptionsForUser(anyLong());
     }
 
 

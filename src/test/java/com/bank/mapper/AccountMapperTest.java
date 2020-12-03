@@ -29,7 +29,7 @@ public class AccountMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Account account = new Account(1L, true, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
+        Account account = new Account(1L, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
                 2222, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
 
         //when
@@ -50,7 +50,7 @@ public class AccountMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Account account = new Account(1L, true, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
+        Account account = new Account(1L, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
                 2222, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
 
         List<Account> accounts = Arrays.asList(account, account, account, account);

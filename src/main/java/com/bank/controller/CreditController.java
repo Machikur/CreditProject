@@ -26,15 +26,10 @@ public class CreditController {
     }
 
     @PostMapping("/credit")
-    public CreditDto createCredit(@RequestParam Long userId, @RequestParam Long accountId,
+    public void createCredit(@RequestParam Long userId, @RequestParam Long accountId,
                                   @RequestParam BigDecimal quote, @RequestParam Integer days)
             throws UserNotFoundException, AccountNotFoundException, CreditCreateException {
-        return creditFacade.createCreditForUser(userId, accountId, quote, CreditType.findByKey(days));
-    }
-
-    @GetMapping("/credit")
-    public CreditDto getCreditDetails(@RequestParam Long creditId) throws CreditNotFoundException {
-        return creditFacade.getCredit(creditId);
+        creditFacade.createCreditForUser(userId, accountId, quote, CreditType.findByKey(days));
     }
 
     @GetMapping("/credits")

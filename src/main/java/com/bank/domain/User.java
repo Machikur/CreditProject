@@ -19,7 +19,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "USER")
+
+@Table(name = "USER",uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
 public class User {
 
     @Id
@@ -41,15 +42,13 @@ public class User {
     @OneToMany(
             targetEntity = Account.class,
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     @OneToMany(
             targetEntity = Credit.class,
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL
     )
     private List<Credit> credits;
 
@@ -72,6 +71,7 @@ public class User {
         updateStatus();
     }
 
+    @PreUpdate
     public void updateStatus() {
         if (this.monthlyEarnings > 10000) {
             this.status = Status.VIP;
@@ -79,6 +79,5 @@ public class User {
             this.status = Status.NEW;
         } else status = Status.STANDARD;
     }
-
 
 }

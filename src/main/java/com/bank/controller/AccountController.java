@@ -28,7 +28,6 @@ public class AccountController {
         return accountFacade.createNewAccount(userId, currency);
     }
 
-
     @GetMapping("/accounts")
     public List<AccountDto> getAccountsByUser(@RequestParam Long userId) throws UserNotFoundException {
         return accountFacade.getAccountsOfUser(userId);
@@ -40,13 +39,13 @@ public class AccountController {
     }
 
     @PutMapping("account/deposit")
-    public boolean depositMoney(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException {
-        return accountFacade.depositMoney(accountId, quote);
+    public void depositMoney(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException {
+         accountFacade.depositMoney(accountId, quote);
     }
 
     @PutMapping("account/withdrawal")
-    public boolean withdrawal(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
-        return accountFacade.withdrawal(accountId, quote);
+    public void withdrawal(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountOperationException, AccountNotFoundException {
+         accountFacade.withdrawal(accountId, quote);
     }
 
     @DeleteMapping("/account")

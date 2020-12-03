@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,12 +45,13 @@ public class CurrencyControllerTest {
                 .andExpect(jsonPath("$.base", is("PLN")))
                 .andExpect(jsonPath("$.rates.PLN", is(2.0)));
 
+        verify(currencyService, times(1)).getActualExchangeRates(any());
+
     }
 
     @Test
     public void shouldReturnDifferentQuote() throws Exception {
         //given
-        Quotes quotes = new Quotes("PLN", new Rates(2, 2, 2, 2));
         when(currencyService.getExchangeQuote(any(), any(), any())).thenReturn(BigDecimal.TEN);
 
         //when and then
@@ -61,21 +62,9 @@ public class CurrencyControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(10)));
+
+        verify(currencyService, times(1)).getExchangeQuote(any(), any(), any());
     }
 
-    @Test
-    public void shouldReturnExchangeRate() throws Exception {
-        //given
-        Quotes quotes = new Quotes("PLN", new Rates(2, 2, 2, 2));
-        when(currencyService.getExchangeRate(any(), any())).thenReturn(10.2);
-
-        //when and then
-        mockMvc.perform(get("/v1/exchangeRate")
-                .param("from", "PLN")
-                .param("to", "EUR")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(10.2)));
-    }
 
 }

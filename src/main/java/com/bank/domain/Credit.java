@@ -45,8 +45,7 @@ public class Credit {
     @OneToMany(
             targetEntity = Payment.class,
             mappedBy = "credit",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            cascade = CascadeType.ALL
     )
     private List<Payment> paymentsFrom;
 

@@ -12,7 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,9 +31,6 @@ public class PaymentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
 
     @MockBean
     private PaymentFacade paymentFacade;
@@ -58,6 +54,7 @@ public class PaymentControllerTest {
                 .andExpect(jsonPath("$.paymentId", is(1)))
                 .andExpect(jsonPath("$.currency", is("PLN")));
 
+        verify(paymentFacade, times(1)).makePayment(any(), anyInt());
     }
 
     @Test
@@ -72,26 +69,28 @@ public class PaymentControllerTest {
                 .param("userId", "1")
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[].size()", is(1)))
+                .andExpect(jsonPath("$.size()", is(1)))
                 .andExpect(jsonPath("$[0].currency", is("PLN")));
+
+        verify(paymentFacade, times(1)).getPaymentListOfUser(anyLong());
 
     }
 
     @Test
     public void shouldReturnEmptyListOfPaymentDto() throws Exception {
         //given
-        when(paymentFacade.getPaymentListOfAccount(anyLong())).thenReturn(new ArrayList<PaymentDto>());
+        when(paymentFacade.getPaymentListOfAccount(anyString())).thenReturn(new ArrayList<>());
 
         //when and then
         mockMvc.perform(get("/v1/accountPayments")
                 .contentType(MediaType.APPLICATION_JSON)
-                .param("accountId", "1")
+                .param("accountNumber", "123")
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()", is(0)));
 
+        verify(paymentFacade, times(1)).getPaymentListOfAccount(anyString());
     }
-
 
     private PaymentDto getSimplePayment() {
         return new PaymentDto(1L, 1L, 1L,

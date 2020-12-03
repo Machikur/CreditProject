@@ -24,9 +24,9 @@ import java.util.Random;
 @Transactional
 public class AccountFacade {
 
-    private AccountService accountService;
-    private UserService userService;
-    private AccountMapper accountMapper;
+    private final AccountService accountService;
+    private final UserService userService;
+    private final AccountMapper accountMapper;
 
     @Autowired
     public AccountFacade(AccountService accountService, UserService userService, AccountMapper accountMapper) {
@@ -47,21 +47,14 @@ public class AccountFacade {
         return accountMapper.mapToAccountDto(account);
     }
 
-    public AccountDto getAccount(Long accountId) throws AccountNotFoundException {
-        return accountMapper.mapToAccountDto(accountService.findAccount(accountId));
-    }
-
-
     public List<AccountDto> getAccountsOfUser(Long userId) throws UserNotFoundException {
         User user = userService.findById(userId);
         return accountMapper.mapToDtoList(user.getAccounts());
     }
 
-    public boolean depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
-        Account account = accountService.findAccount(accountId);
-        account.depositMoney(quote);
-        accountService.saveAccount(account);
-        return true;
+    public void depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
+            Account account = accountService.findAccount(accountId);
+            account.depositMoney(quote);
     }
 
     public Double getAllCashInCurrency(Long userId, Currency currency) throws UserNotFoundException {
@@ -83,11 +76,10 @@ public class AccountFacade {
 
     }
 
-    public boolean withdrawal(Long accountId, BigDecimal quote) throws AccountNotFoundException, AccountOperationException {
+    public void withdrawal(Long accountId, BigDecimal quote) throws AccountOperationException, AccountNotFoundException {
         Account account = accountService.findAccount(accountId);
         account.withdrawMoney(quote);
         accountService.saveAccount(account);
-        return true;
     }
 
     private String accountNumberCreator() {

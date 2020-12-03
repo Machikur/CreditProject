@@ -44,7 +44,7 @@ public class CreditFacade {
         this.creditEngine = creditEngine;
     }
 
-    public CreditDto createCreditForUser(Long userId, Long accountId, BigDecimal quote, CreditType creditType)
+    public void createCreditForUser(Long userId, Long accountId, BigDecimal quote, CreditType creditType)
             throws UserNotFoundException, AccountNotFoundException, CreditCreateException {
         User user = userService.findById(userId);
         Account account = accountService.findAccount(accountId);
@@ -57,7 +57,7 @@ public class CreditFacade {
             throw new CreditCreateException("Nie można udzielić kredytu dla wybranego statusu");
         }
         Credit credit = new Credit();
-        double interest = countInterest(user.getStatus(), creditType) / 100;
+        double interest = countInterestForUser(user.getStatus(), creditType) / 100;
         credit.setAmountToPay(quote.add(quote.multiply(BigDecimal.valueOf(interest))));
         credit.setUser(user);
         credit.setCurrency(account.getCurrency());
@@ -67,11 +67,6 @@ public class CreditFacade {
         accountService.saveAccount(account);
         log.info("Stworzono nowy kredyt dla uzytkownika {} o wartości {}",
                 user.getName(), quote);
-        return creditMapper.mapToCreditDto(credit);
-    }
-
-    public CreditDto getCredit(Long creditId) throws CreditNotFoundException {
-        return creditMapper.mapToCreditDto(creditService.getCredit(creditId));
     }
 
     public List<CreditDto> getCreditsForUser(Long userId) throws UserNotFoundException {
@@ -87,10 +82,6 @@ public class CreditFacade {
                 credit.getUser().getName(), creditId);}
     }
 
-    public double countInterest(Status status, CreditType creditType) {
-        return creditEngine.countInterest(status, creditType);
-    }
-
     public double countInterest(Long userId, int days) throws UserNotFoundException {
         User user= userService.findById(userId);
         return creditEngine.countInterest(user.getStatus(), CreditType.findByKey(days));
@@ -102,6 +93,11 @@ public class CreditFacade {
                 creditEngine.getMaxQuoteByAccountStatus(user.getStatus()),
                 creditEngine.checkAvailableCreditsTypeForAccount(user.getStatus()));
     }
+
+    private double countInterestForUser(Status status, CreditType creditType) {
+        return creditEngine.countInterest(status, creditType);
+    }
+
 
 
 }
