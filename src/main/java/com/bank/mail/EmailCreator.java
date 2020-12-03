@@ -26,4 +26,5 @@ public class EmailCreator {
         context.setVariable("Data", LocalDateTime.now());
         return templateEngine.process("mail.html", context);
     }
+
 }

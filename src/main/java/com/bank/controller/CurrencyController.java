@@ -32,5 +32,4 @@ public class CurrencyController {
         return currencyService.getExchangeQuote(from, to, quote);
     }
 
-
 }

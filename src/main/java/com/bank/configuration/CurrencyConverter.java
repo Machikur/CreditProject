@@ -9,4 +9,5 @@ public class CurrencyConverter implements Converter<String, Currency> {
     public Currency convert(String source) {
         return Currency.valueOf(source.toUpperCase());
     }
+
 }

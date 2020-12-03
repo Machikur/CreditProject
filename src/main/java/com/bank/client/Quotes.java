@@ -18,5 +18,4 @@ public class Quotes {
     @JsonProperty("rates")
     private Rates rates;
 
-
 }

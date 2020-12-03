@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class AccountService {
 
-
     private final AccountDao accountDao;
 
     @Autowired
@@ -37,6 +36,5 @@ public class AccountService {
     public void deleteAccount(Account account) {
         accountDao.delete(account);
     }
-
 
 }

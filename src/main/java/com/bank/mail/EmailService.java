@@ -37,4 +37,5 @@ public class EmailService {
             messageHelper.setText(emailCreator.buildEmail(mail), true);
         };
     }
+
 }

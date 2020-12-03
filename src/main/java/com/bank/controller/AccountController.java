@@ -40,16 +40,16 @@ public class AccountController {
 
     @PutMapping("account/deposit")
     public void depositMoney(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountNotFoundException {
-         accountFacade.depositMoney(accountId, quote);
+        accountFacade.depositMoney(accountId, quote);
     }
 
     @PutMapping("account/withdrawal")
     public void withdrawal(@RequestParam Long accountId, @RequestParam BigDecimal quote) throws AccountOperationException, AccountNotFoundException {
-         accountFacade.withdrawal(accountId, quote);
+        accountFacade.withdrawal(accountId, quote);
     }
 
     @DeleteMapping("/account")
-    public void deleteAccount(@RequestParam Long accountId,@RequestParam int pinNumber) throws AccountNotFoundException {
+    public void deleteAccount(@RequestParam Long accountId, @RequestParam int pinNumber) throws AccountNotFoundException {
         accountFacade.deleteAccount(accountId, pinNumber);
     }
 

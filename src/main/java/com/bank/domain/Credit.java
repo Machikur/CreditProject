@@ -15,10 +15,11 @@ import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor
 @Table(name = "CREDIT")
 public class Credit {
+
     @Id
     @GeneratedValue
     private Long id;
@@ -49,19 +50,11 @@ public class Credit {
     )
     private List<Payment> paymentsFrom;
 
-
     public Credit(User user, BigDecimal amountToPay, Currency currency, LocalDate finishTime) {
         this.user = user;
         this.amountToPay = amountToPay;
         this.currency = currency;
         this.finishTime = finishTime;
-        this.paymentsFrom = new ArrayList<>();
-        this.amountPaid = BigDecimal.ZERO;
-        this.startTime = LocalDate.now();
-        this.isFinished = false;
-    }
-
-    public Credit() {
         this.paymentsFrom = new ArrayList<>();
         this.amountPaid = BigDecimal.ZERO;
         this.startTime = LocalDate.now();

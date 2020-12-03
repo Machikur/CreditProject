@@ -18,7 +18,6 @@ public class AccountMapper {
         this.paymentMapper = paymentMapper;
     }
 
-
     public AccountDto mapToAccountDto(Account account) {
         return new AccountDto(
                 account.getId(),

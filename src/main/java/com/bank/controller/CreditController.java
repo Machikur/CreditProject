@@ -27,7 +27,7 @@ public class CreditController {
 
     @PostMapping("/credit")
     public void createCredit(@RequestParam Long userId, @RequestParam Long accountId,
-                                  @RequestParam BigDecimal quote, @RequestParam Integer days)
+                             @RequestParam BigDecimal quote, @RequestParam Integer days)
             throws UserNotFoundException, AccountNotFoundException, CreditCreateException {
         creditFacade.createCreditForUser(userId, accountId, quote, CreditType.findByKey(days));
     }
@@ -46,8 +46,9 @@ public class CreditController {
     public CreditOptionsDto getOptionsForUser(@RequestParam Long userId) throws UserNotFoundException {
         return creditFacade.getOptionsForUser(userId);
     }
+
     @GetMapping("credit/interest")
-    public Double countInterest(@RequestParam Long userId,@RequestParam int days) throws UserNotFoundException {
+    public Double countInterest(@RequestParam Long userId, @RequestParam int days) throws UserNotFoundException {
         return creditFacade.countInterest(userId, days);
     }
 

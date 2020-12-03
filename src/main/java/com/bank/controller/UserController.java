@@ -38,12 +38,12 @@ public class UserController {
 
     @DeleteMapping("/user")
     public void deleteUser(@RequestParam Long userId) throws UserNotFoundException, UserOperationException {
-       userFacade.deleteUser(userId);
+        userFacade.deleteUser(userId);
     }
 
     @PutMapping("/user")
     public void updateUser(@RequestBody UserDto userDto) throws UserNotFoundException {
-         userFacade.updateUser(userDto);
+        userFacade.updateUser(userDto);
     }
 
 }

@@ -59,7 +59,7 @@ public class PaymentFacade {
             payToAccount(accountFrom, accountTo, paymentDto.getQuote());
             payment.setAccountTo(accountTo);
             accountService.saveAccount(accountTo);
-            log.info("Przelano z konta o id {} kwote {}{} na konto o numerze id: {}",accountFrom.getId(), paymentDto.getQuote(), accountFrom.getCurrency(), accountTo.getId());
+            log.info("Przelano z konta o id {} kwote {}{} na konto o numerze id: {}", accountFrom.getId(), paymentDto.getQuote(), accountFrom.getCurrency(), accountTo.getId());
         }
         log.info("Transakcja zakończona pomyślnie");
         accountFrom.getPaymentsFrom().add(payment);
@@ -74,7 +74,6 @@ public class PaymentFacade {
                 .flatMap(s -> s.getPaymentsFrom().stream())
                 .map(paymentMapper::mapToPaymentDto)
                 .collect(Collectors.toList());
-
     }
 
     public List<PaymentDto> getPaymentListOfAccount(String accountNumber) throws AccountNotFoundException {
@@ -100,4 +99,5 @@ public class PaymentFacade {
         accountService.saveAccount(from);
         creditService.saveCredit(to);
     }
+
 }

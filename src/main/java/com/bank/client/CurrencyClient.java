@@ -11,7 +11,6 @@ import java.net.URI;
 public class CurrencyClient {
 
     private final static String RATES_URL = "https://api.exchangeratesapi.io/latest";
-
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -23,7 +22,6 @@ public class CurrencyClient {
         return restTemplate.getForObject(getCurrenciesURI(currency), Quotes.class);
     }
 
-
     private URI getCurrenciesURI(Currency currency) {
         if (currency.equals(Currency.EUR)) {
             return UriComponentsBuilder.fromHttpUrl(RATES_URL).build().encode().toUri();
@@ -32,4 +30,5 @@ public class CurrencyClient {
                 .queryParam("base", currency)
                 .build().encode().toUri();
     }
+
 }

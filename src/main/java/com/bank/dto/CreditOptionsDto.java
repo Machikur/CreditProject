@@ -10,6 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class CreditOptionsDto {
+
     private BigDecimal maxQuote;
+
     private List<CreditType> availableCreditTypes;
+
 }

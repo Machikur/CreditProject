@@ -10,7 +10,9 @@ import com.bank.exception.UserNotFoundException;
 import com.bank.exception.UserOperationException;
 import com.bank.mapper.UserMapper;
 import com.bank.service.UserService;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
 @SpringBootTest
@@ -36,36 +37,40 @@ public class UserFacadeTest {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
     private AccountFacade accountFacade;
 
+    private User user;
+
+    private long userId;
+
+    @Before
+    public void createUserForTests() {
+        user = getSimpleUser();
+        userService.saveUser(user);
+        userId = user.getId();
+    }
+
+    @After
+    public void deleteUserAndCleanUpAfterTest() {
+        try {
+            userService.deleteUser(userService.findById(userId));
+        } catch (UserNotFoundException s) {
+            System.out.println("nie znaleziono użytkownika");
+        }
+    }
+
     @Test
-    public void saveUserTest() throws UserNotFoundException {
-        //given
-        User user = getSimpleUser();
-        Long userId = user.getId();
+    public void saveUserTest() {
+        //when & then
+        Assert.assertNotNull(userId);
+        Assert.assertNotNull(user.getName());
+        Assert.assertEquals(user.getMailAddress(), "mail@mail.com");
+        Assert.assertEquals("1234", user.getPassword());
 
-        //when
-        UserDto userDto = userFacade.saveUser(userMapper.mapToUserDto(user));
-
-        //then
-        Assert.assertNull(userId);
-        Assert.assertNotNull(userDto.getId());
-        Assert.assertEquals(user.getName(), userDto.getName());
-        Assert.assertEquals(user.getPassword(), userDto.getPassword());
-
-        //clean up
-        userService.deleteUser(userService.findById(userDto.getId()));
     }
 
     @Test
     public void loadUserTest() throws UserNotFoundException {
-        //given
-        User user = getSimpleUser();
-        userFacade.saveUser(userMapper.mapToUserDto(user));
-
         //when
         UserDto userDto = userFacade.findUserByNameAndPassword(user.getName(), user.getPassword());
 
@@ -75,18 +80,10 @@ public class UserFacadeTest {
         Assert.assertEquals(user.getPassword(), userDto.getPassword());
         Assert.assertEquals(user.getMailAddress(), userDto.getMailAddress());
         Assert.assertEquals(user.getMonthlyEarnings(), userDto.getMonthlyEarnings());
-
-        //clean up
-        userService.deleteUser(userService.findById(userDto.getId()));
     }
 
     @Test
     public void deleteUserTest() throws UserNotFoundException, UserOperationException {
-        //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        long userId = user.getId();
-
         //when
         userFacade.deleteUser(userId);
         boolean userIsExist = userService.existById(userId);
@@ -94,13 +91,10 @@ public class UserFacadeTest {
         //then
         Assert.assertFalse(userIsExist);
 
-        //clean up
     }
 
     @Test(expected = UserOperationException.class)
     public void shouldNotDeleteUserTest() throws UserNotFoundException, UserOperationException, AccountOperationException {
-        //given
-        User user = getSimpleUser();
         Account account = new Account(2L, BigDecimal.TEN, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
                 2133, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
         userService.saveUser(user);
@@ -116,13 +110,10 @@ public class UserFacadeTest {
         //clean up
         account.withdrawMoney(BigDecimal.TEN);
         userService.saveUser(user);
-        userFacade.deleteUser(userId);
     }
 
     @Test
     public void updateUserTest() throws UserNotFoundException {
-        //given
-        User user = getSimpleUser();
         String oldName = user.getName();
         String oldPassword = user.getPassword();
         String oldMail = user.getMailAddress();
@@ -142,20 +133,13 @@ public class UserFacadeTest {
         Assert.assertNotEquals(afterUpdate.getPassword(), oldPassword);
         Assert.assertNotEquals(afterUpdate.getMailAddress(), oldMail);
         Assert.assertNotEquals(afterUpdate.getMonthlyEarnings(), oldEarnings, 0.1);
-
-        //clean up
-        userService.deleteUser(userService.findById(user.getId()));
     }
 
     @Test
     public void getListOfUsersCurrenciesTest() throws UserNotFoundException {
-        //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long id = user.getId();
-        accountFacade.createNewAccount(id, Currency.PLN);
-        accountFacade.createNewAccount(id, Currency.EUR);
-        accountFacade.createNewAccount(id, Currency.GBP);
+        accountFacade.createNewAccount(userId, Currency.PLN);
+        accountFacade.createNewAccount(userId, Currency.EUR);
+        accountFacade.createNewAccount(userId, Currency.GBP);
 
         //when
         Collection<Currency> currencies = userFacade.getListOfUsersCurrencies(user.getId());
@@ -167,8 +151,6 @@ public class UserFacadeTest {
         Assert.assertTrue(currencies.contains(Currency.GBP));
         Assert.assertFalse(currencies.contains(Currency.USD));
 
-        //cleanUp
-        userService.deleteUser(userService.findById(user.getId()));
     }
 
     private User getSimpleUser() {

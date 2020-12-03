@@ -8,6 +8,4 @@ import java.util.List;
 
 @Repository
 public interface PaymentDao extends CrudRepository<Payment, Long> {
-
-    List<Payment> getAllByAccountFrom_IdEqualsOrAccountToIdEquals(Long accountFromId, Long accountToId);
 }

@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class UserFacade {
 
     private final UserService userService;
-
     private final UserMapper userMapper;
 
     @Autowired
@@ -63,7 +62,6 @@ public class UserFacade {
         userService.saveUser(user);
         log.info("Zaaktualizowano użytownika {} ", user.getName());
     }
-
 
     public Collection<Currency> getListOfUsersCurrencies(Long userId) throws UserNotFoundException {
         User user = userService.findById(userId);

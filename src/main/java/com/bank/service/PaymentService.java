@@ -22,13 +22,8 @@ public class PaymentService {
         paymentDao.save(payment);
     }
 
-
     public Payment findById(Long paymentId) throws PaymentNotFoundException {
         return paymentDao.findById(paymentId).orElseThrow(PaymentNotFoundException::new);
-    }
-
-    public List<Payment> getAllAccountsPayments(Long accountId) {
-        return paymentDao.getAllByAccountFrom_IdEqualsOrAccountToIdEquals(accountId, accountId);
     }
 
 }

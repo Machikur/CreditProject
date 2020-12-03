@@ -33,4 +33,5 @@ public class AccountDto {
     private List<PaymentDto> paymentsFrom;
 
     private List<PaymentDto> paymentsTo;
+
 }

@@ -34,4 +34,5 @@ public class CreditDto {
     private boolean isFinished;
 
     private List<PaymentDto> payments;
+
 }

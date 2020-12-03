@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     private final AccountMapper accountMapper;
+
     private final CreditMapper creditMapper;
 
     @Autowired
@@ -16,7 +17,6 @@ public class UserMapper {
         this.accountMapper = accountMapper;
         this.creditMapper = creditMapper;
     }
-
 
     public UserDto mapToUserDto(User user) {
         return new UserDto(
@@ -38,4 +38,5 @@ public class UserMapper {
                 userDto.getMailAddress(),
                 userDto.getMonthlyEarnings());
     }
+
 }

@@ -9,7 +9,5 @@ import java.util.Optional;
 @Repository
 public interface AccountDao extends CrudRepository<Account, Long> {
 
-    Optional<Account> findByAccountNumberAndPinCode(String accountNumber,int pinCode);
-
     Optional<Account> findByAccountNumber(String accountNumber);
 }

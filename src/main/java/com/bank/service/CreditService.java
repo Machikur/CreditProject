@@ -19,7 +19,6 @@ public class CreditService {
         this.creditDao = creditDao;
     }
 
-
     public void saveCredit(Credit credit) {
         creditDao.save(credit);
     }
@@ -32,10 +31,8 @@ public class CreditService {
         creditDao.delete(credit);
     }
 
-
     public List<Credit> findAllByFinishTimeBeforeNow() {
         return creditDao.findAllByFinishTimeBefore(LocalDate.now());
     }
-
 
 }

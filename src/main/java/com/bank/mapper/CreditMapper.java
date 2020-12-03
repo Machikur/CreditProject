@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @Component
 public class CreditMapper {
 
-
     private final PaymentMapper paymentMapper;
 
     @Autowired
@@ -46,4 +45,5 @@ public class CreditMapper {
                 .map(this::mapToCreditDto)
                 .collect(Collectors.toList());
     }
+
 }

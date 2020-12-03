@@ -13,8 +13,10 @@ import java.util.List;
 @Component
 @Slf4j
 public class EmailScheduler {
+
     private final EmailService emailService;
     private final CreditService creditService;
+
     private final String MESSAGE = "Drogi użytkowniku przypominam że termin spłacenia kredytu upłynął i " +
             "naliczane są dodatkowe odsetki każdego dnia. Prosimy o niezwłoczne uregulowanie zobowiązań";
 

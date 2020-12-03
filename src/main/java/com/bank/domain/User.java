@@ -19,8 +19,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-
-@Table(name = "USER",uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
+@Table(name = "USER", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class User {
 
     @Id

@@ -9,7 +9,9 @@ import com.bank.exception.AccountOperationException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.service.AccountService;
 import com.bank.service.UserService;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,32 +37,41 @@ public class AccountFacadeTest {
     @Autowired
     private UserService userService;
 
-    @Test
-    public void createAccountTest() throws UserNotFoundException, AccountNotFoundException {
-        //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long userId = user.getId();
+    private User user;
 
+    private long userId;
+
+    @Before
+    public void createUserForTests() {
+        user = getSimpleUser();
+        userService.saveUser(user);
+        userId = user.getId();
+    }
+
+    @After
+    public void deleteUserAndCleanUpAfterTest() {
+        try {
+            userService.deleteUser(userService.findById(userId));
+        } catch (UserNotFoundException s) {
+            System.out.println("nie znaleziono użytkownika");
+        }
+    }
+
+    @Test
+    public void createAccountTest() throws UserNotFoundException{
         //when
         AccountDto result = accountFacade.createNewAccount(userId, Currency.PLN);
 
         //then
         Assert.assertEquals(0, result.getCashBalance().compareTo(BigDecimal.ZERO));
-        Assert.assertEquals(result.getUserId(), userId);
+        Assert.assertEquals((long) result.getUserId(), userId);
         Assert.assertEquals(result.getCurrency(), Currency.PLN);
         Assert.assertEquals(result.getPaymentsFrom(), new ArrayList<>());
-
-        //clean up
-        userService.deleteUser(userService.findById(userId));
     }
 
     @Test
     public void getAccountsOfUserTest() throws UserNotFoundException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long userId = user.getId();
         accountFacade.createNewAccount(userId, Currency.PLN);
         accountFacade.createNewAccount(userId, Currency.GBP);
         accountFacade.createNewAccount(userId, Currency.EUR);
@@ -79,17 +90,11 @@ public class AccountFacadeTest {
         Assert.assertTrue(eurAccount);
         Assert.assertTrue(gbpAccount);
         Assert.assertTrue(plnAccount);
-
-        //clean up
-        userService.deleteUser(userService.findById(userId));
     }
 
     @Test
     public void depositMoneyTest() throws UserNotFoundException, AccountNotFoundException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long userId = user.getId();
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         Long accountId = accountDto.getId();
         Account account = accountService.findAccount(accountId);
@@ -102,18 +107,11 @@ public class AccountFacadeTest {
         //then
         Assert.assertNotEquals(quoteAfter, quoteBefore);
         Assert.assertEquals(0, quoteAfter.compareTo(BigDecimal.TEN));
-
-
-        //cleanUp
-        userService.deleteUser(userService.findById(userId));
     }
 
     @Test()
     public void withdrawMoneyTest() throws UserNotFoundException, AccountNotFoundException, AccountOperationException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long userId = user.getId();
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         Long accountId = accountDto.getId();
         accountFacade.depositMoney(accountId, BigDecimal.TEN);
@@ -126,18 +124,11 @@ public class AccountFacadeTest {
         //then
         Assert.assertNotEquals(quoteAfter, quoteBefore);
         Assert.assertEquals(0, quoteAfter.compareTo(BigDecimal.ZERO), 0.1);
-
-
-        //cleanUp
-        userService.deleteUser(userService.findById(userId));
     }
 
     @Test(expected = AccountOperationException.class)
     public void withdrawMoneyTestShouldThrowException() throws UserNotFoundException, AccountNotFoundException, AccountOperationException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long userId = user.getId();
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         Long accountId = accountDto.getId();
         accountFacade.depositMoney(accountId, BigDecimal.valueOf(5.0));
@@ -150,45 +141,32 @@ public class AccountFacadeTest {
         //then
         Assert.assertEquals(quoteAfter, quoteBefore);
         Assert.assertEquals(0, quoteAfter.compareTo(BigDecimal.valueOf(5.0)), 0.1);
-
-
-        //cleanUp
-        userService.deleteUser(userService.findById(userId));
     }
 
     @Test
     public void getAllCashInCurrencyTest() throws UserNotFoundException, AccountNotFoundException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long id = user.getId();
-        AccountDto one = accountFacade.createNewAccount(id, Currency.PLN);
-        AccountDto two = accountFacade.createNewAccount(id, Currency.PLN);
-        accountFacade.createNewAccount(id, Currency.GBP);
+        AccountDto one = accountFacade.createNewAccount(userId, Currency.PLN);
+        AccountDto two = accountFacade.createNewAccount(userId, Currency.PLN);
+        accountFacade.createNewAccount(userId, Currency.GBP);
 
         //when
         accountFacade.depositMoney(one.getId(), BigDecimal.TEN);
         accountFacade.depositMoney(two.getId(), BigDecimal.TEN);
-        Double plnOnAccount = accountFacade.getAllCashInCurrency(id, Currency.PLN);
-        Double gbpOnAccount = accountFacade.getAllCashInCurrency(id, Currency.GBP);
-        Double eurOnAccount = accountFacade.getAllCashInCurrency(id, Currency.EUR);
+        Double plnOnAccount = accountFacade.getAllCashInCurrency(userId, Currency.PLN);
+        Double gbpOnAccount = accountFacade.getAllCashInCurrency(userId, Currency.GBP);
+        Double eurOnAccount = accountFacade.getAllCashInCurrency(userId, Currency.EUR);
 
         //then
         Assert.assertEquals(20, plnOnAccount, 0.1);
         Assert.assertEquals(0, gbpOnAccount, 0.1);
         Assert.assertEquals(0, eurOnAccount, 0.1);
-
-        //cleanUp
-        userService.deleteUser(userService.findById(user.getId()));
     }
 
     @Test
     public void deleteUserTest() throws UserNotFoundException, AccountNotFoundException {
         //given
-        User user = getSimpleUser();
-        userService.saveUser(user);
-        Long id = user.getId();
-        AccountDto one = accountFacade.createNewAccount(id, Currency.PLN);
+        AccountDto one = accountFacade.createNewAccount(userId, Currency.PLN);
         long accountId = one.getId();
 
         //when
@@ -197,9 +175,6 @@ public class AccountFacadeTest {
 
         //then
         Assert.assertFalse(accountIsExist);
-
-        //cleanUp
-        userService.deleteUser(userService.findById(user.getId()));
     }
 
     private User getSimpleUser() {

@@ -30,4 +30,5 @@ public class PaymentDto {
     private LocalDateTime createTime;
 
     private BigDecimal quote;
+
 }

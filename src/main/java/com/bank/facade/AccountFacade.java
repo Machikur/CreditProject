@@ -25,7 +25,9 @@ import java.util.Random;
 public class AccountFacade {
 
     private final AccountService accountService;
+
     private final UserService userService;
+
     private final AccountMapper accountMapper;
 
     @Autowired
@@ -53,8 +55,8 @@ public class AccountFacade {
     }
 
     public void depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
-            Account account = accountService.findAccount(accountId);
-            account.depositMoney(quote);
+        Account account = accountService.findAccount(accountId);
+        account.depositMoney(quote);
     }
 
     public Double getAllCashInCurrency(Long userId, Currency currency) throws UserNotFoundException {
@@ -63,7 +65,6 @@ public class AccountFacade {
                 .filter(a -> a.getCurrency().equals(currency))
                 .mapToDouble(a -> a.getCashBalance().doubleValue())
                 .sum();
-
     }
 
     public void deleteAccount(Long accountId, int pinNumber) throws AccountNotFoundException {
@@ -73,7 +74,6 @@ public class AccountFacade {
             log.info("Konto o id: {} zostało usunięte",
                     account.getId());
         }
-
     }
 
     public void withdrawal(Long accountId, BigDecimal quote) throws AccountOperationException, AccountNotFoundException {
@@ -98,4 +98,5 @@ public class AccountFacade {
         Random random = new Random();
         return random.nextInt(8999) + 1000;
     }
+
 }

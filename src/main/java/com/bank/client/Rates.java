@@ -36,4 +36,5 @@ public class Rates {
                 throw new IllegalArgumentException("Wrong Currency");
         }
     }
+
 }
