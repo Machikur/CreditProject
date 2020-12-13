@@ -1,12 +1,9 @@
 package com.bank.service;
 
 import com.bank.domain.Payment;
-import com.bank.exception.PaymentNotFoundException;
 import com.bank.repository.PaymentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PaymentService {
@@ -20,10 +17,6 @@ public class PaymentService {
 
     public void savePayment(Payment payment) {
         paymentDao.save(payment);
-    }
-
-    public Payment findById(Long paymentId) throws PaymentNotFoundException {
-        return paymentDao.findById(paymentId).orElseThrow(PaymentNotFoundException::new);
     }
 
 }

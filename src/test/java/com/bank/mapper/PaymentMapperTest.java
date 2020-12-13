@@ -1,9 +1,15 @@
 package com.bank.mapper;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.Payment;
+import com.bank.domain.User;
 import com.bank.dto.PaymentDto;
+import com.bank.exception.AccountNotFoundException;
+import com.bank.exception.CreditNotFoundException;
+import com.bank.exception.UserNotFoundException;
+import com.bank.facade.AccountFacade;
+import com.bank.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +29,12 @@ public class PaymentMapperTest {
     @Autowired
     private PaymentMapper paymentMapper;
 
+    @Autowired
+    private AccountFacade accountFacade;
+
+    @Autowired
+    private UserService userService;
+
     @Test
     public void shouldReturnPaymentDto() {
         //given
@@ -30,7 +42,7 @@ public class PaymentMapperTest {
         accountOne.setId(1L);
         Account accountTwo = new Account();
         accountTwo.setId(2L);
-        Payment payment = new Payment(Currency.PLN, BigDecimal.TEN);
+        Payment payment = new Payment(null, null, null, Currency.PLN, BigDecimal.TEN);
         payment.setAccountFrom(accountOne);
         payment.setAccountTo(accountTwo);
         payment.setCreateTime(LocalDateTime.of(1, 1, 1, 1, 1, 1));
@@ -47,9 +59,14 @@ public class PaymentMapperTest {
     }
 
     @Test
-    public void shouldReturnPaymentTest() {
+    public void shouldReturnPaymentTest() throws AccountNotFoundException, CreditNotFoundException, UserNotFoundException {
         //given
-        PaymentDto paymentDto = new PaymentDto(1L, 1L, 1L,
+        User user = new User("Maniak", "1234", "mail@mail.com", 2000.0);
+        userService.saveUser(user);
+        accountFacade.createNewAccount(user.getId(), Currency.PLN);
+        Long accountId = accountFacade.getAccountsOfUser(user.getId()).get(0).getId();
+
+        PaymentDto paymentDto = new PaymentDto(1L, accountId, null,
                 null, Currency.PLN, null, BigDecimal.TEN);
 
         //when
@@ -67,7 +84,7 @@ public class PaymentMapperTest {
         accountOne.setId(1L);
         Account accountTwo = new Account();
         accountTwo.setId(2L);
-        Payment payment = new Payment(Currency.PLN, BigDecimal.TEN);
+        Payment payment = new Payment(null, null, null, Currency.PLN, BigDecimal.TEN);
         payment.setAccountFrom(accountOne);
         payment.setAccountTo(accountTwo);
         payment.setCreateTime(LocalDateTime.of(1, 1, 1, 1, 1, 1));

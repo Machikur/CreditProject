@@ -1,6 +1,6 @@
 package com.bank.mail;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.service.CreditService;
@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class EmailSchedulerTest {
 
@@ -38,7 +38,7 @@ public class EmailSchedulerTest {
     public void shouldSendMessage() {
         //given
         Credit credit = getSimpleCredit();
-        when(creditService.findAllByFinishTimeBeforeNow()).thenReturn(Collections.singletonList(credit));
+        when(creditService.findAllByFinishTimeBeforeAndIsFinished(any(), anyBoolean())).thenReturn(Collections.singletonList(credit));
 
         //when & then
         emailScheduler.sendInformationEmail();
@@ -51,7 +51,7 @@ public class EmailSchedulerTest {
         List<Credit> creditList = Arrays.asList(getSimpleCredit(),
                 getSimpleCredit(), getSimpleCredit(), getSimpleCredit(), getSimpleCredit());
 
-        when(creditService.findAllByFinishTimeBeforeNow()).thenReturn(creditList);
+        when(creditService.findAllByFinishTimeBeforeAndIsFinished(any(), anyBoolean())).thenReturn(creditList);
 
         //when & then
         Assert.assertEquals(5, creditList.size());
@@ -64,7 +64,7 @@ public class EmailSchedulerTest {
         //given
         List<Credit> creditList = new ArrayList<>();
 
-        when(creditService.findAllByFinishTimeBeforeNow()).thenReturn(creditList);
+        when(creditService.findAllByFinishTimeBeforeAndIsFinished(any(), anyBoolean())).thenReturn(creditList);
 
         //when & then
         Assert.assertEquals(0, creditList.size());
@@ -73,8 +73,8 @@ public class EmailSchedulerTest {
     }
 
     private Credit getSimpleCredit() {
-        return new Credit(1L, new User(), BigDecimal.TEN, BigDecimal.ZERO,
-                Currency.PLN, LocalDate.now().plusDays(1), LocalDate.now(), false, new ArrayList<>());
+        return new Credit(new User(), BigDecimal.TEN,
+                Currency.PLN, LocalDate.now().minusDays(1));
     }
 
 }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
 
     private final AccountMapper accountMapper;
-
     private final CreditMapper creditMapper;
 
     @Autowired
@@ -28,7 +27,8 @@ public class UserMapper {
                 creditMapper.mapToListDto(user.getCredits()),
                 user.getMonthlyEarnings(),
                 user.getStatus(),
-                user.getCreateDate()
+                user.getCreateDate(),
+                user.isEnable()
         );
     }
 

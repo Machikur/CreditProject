@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface AccountDao extends CrudRepository<Account, Long> {
 
     Optional<Account> findByAccountNumber(String accountNumber);
+
 }

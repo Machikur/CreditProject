@@ -26,7 +26,7 @@ public class EmailService {
             javaMailSender.send(createMimeMessage(mail));
             log.info("Email has been sent");
         } catch (MailException s) {
-            log.error("Failed to process email sending", s.getMessage(), s);
+            log.error("Failed to process email sending {}", s.getMessage(), s);
         }
     }
 

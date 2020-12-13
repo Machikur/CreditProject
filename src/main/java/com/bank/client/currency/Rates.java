@@ -1,4 +1,4 @@
-package com.bank.client;
+package com.bank.client.currency;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

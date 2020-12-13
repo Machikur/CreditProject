@@ -1,6 +1,6 @@
 package com.bank.configuration;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import org.springframework.core.convert.converter.Converter;
 
 public class CurrencyConverter implements Converter<String, Currency> {

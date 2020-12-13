@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface CreditDao extends CrudRepository<Credit, Long> {
 
-    List<Credit> findAllByFinishTimeBefore(LocalDate date);
+    List<Credit> findAllByFinishTimeBeforeAndIsFinished(LocalDate date, Boolean finished);
+
 }

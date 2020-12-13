@@ -1,7 +1,7 @@
 package com.bank.controller;
 
 import com.bank.bank.Status;
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.dto.CreditDto;
 import com.bank.dto.UserDto;
 import com.bank.facade.UserFacade;
@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -132,6 +131,7 @@ public class UserControllerTest {
 
     public UserDto getSimpleUserDto() {
         return new UserDto(1L, "Marcin", "1234", "mail@mail.com",
-                new ArrayList<>(), Collections.singletonList(new CreditDto()), 2000.0, Status.NEW, LocalDate.now());
+                new ArrayList<>(), Collections.singletonList(new CreditDto()), 2000.0, Status.NEW, LocalDate.now(), true);
     }
+
 }

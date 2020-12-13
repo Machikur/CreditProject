@@ -1,4 +1,4 @@
-package com.bank.client;
+package com.bank.client.currency;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

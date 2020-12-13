@@ -17,7 +17,7 @@ public class CreditEngine {
         return (STANDARD_INTEREST * status.getInterestMultiplier()) + creditTypeMultiplier;
     }
 
-    public List<CreditType> checkAvailableCreditsTypeForAccount(Status status) {
+    public List<CreditType> checkAvailableCreditsTypeByStatus(Status status) {
         switch (status) {
             case VIP:
                 return Arrays.asList(CreditType.values());
@@ -42,4 +42,5 @@ public class CreditEngine {
     public LocalDate getFinishTime(CreditType creditType) {
         return LocalDate.now().plusDays(creditType.getDays());
     }
+
 }

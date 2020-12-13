@@ -1,6 +1,6 @@
 package com.bank.controller;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.dto.PaymentDto;
 import com.bank.facade.PaymentFacade;
 import com.google.gson.Gson;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,6 +48,7 @@ public class PaymentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(paymentToGson)
                 .param("pinNumber", "1223")
+                .param("userId", "1")
                 .characterEncoding("UTF-8"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.paymentId", is(1)))

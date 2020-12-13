@@ -1,7 +1,6 @@
 package com.bank.domain;
 
-import com.bank.client.Currency;
-import lombok.AllArgsConstructor;
+import com.bank.client.currency.Currency;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Table(name = "CREDIT")
-public class Credit {
+public class Credit implements PaymentDirection {
 
     @Id
     @GeneratedValue
@@ -61,7 +60,8 @@ public class Credit {
         this.isFinished = false;
     }
 
-    public void makePayment(BigDecimal amount) {
+    @Override
+    public void depositMoney(BigDecimal amount) {
         amountPaid = amountPaid.add(amount);
         if (amountToPay.compareTo(amountPaid) <= 0) {
             isFinished = true;

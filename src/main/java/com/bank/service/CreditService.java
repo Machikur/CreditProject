@@ -23,7 +23,7 @@ public class CreditService {
         creditDao.save(credit);
     }
 
-    public Credit getCredit(Long creditId) throws CreditNotFoundException {
+    public Credit findCredit(Long creditId) throws CreditNotFoundException {
         return creditDao.findById(creditId).orElseThrow(CreditNotFoundException::new);
     }
 
@@ -31,8 +31,8 @@ public class CreditService {
         creditDao.delete(credit);
     }
 
-    public List<Credit> findAllByFinishTimeBeforeNow() {
-        return creditDao.findAllByFinishTimeBefore(LocalDate.now());
+    public List<Credit> findAllByFinishTimeBeforeAndIsFinished(LocalDate dateToCompare, boolean isFinished) {
+        return creditDao.findAllByFinishTimeBeforeAndIsFinished(dateToCompare, isFinished);
     }
 
 }

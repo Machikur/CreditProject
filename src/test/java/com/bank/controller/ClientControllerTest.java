@@ -1,7 +1,7 @@
 package com.bank.controller;
 
-import com.bank.client.Quotes;
-import com.bank.client.Rates;
+import com.bank.client.currency.Quotes;
+import com.bank.client.currency.Rates;
 import com.bank.service.CurrencyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,15 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(CurrencyController.class)
-public class CurrencyControllerTest {
+@WebMvcTest(ClientController.class)
+public class ClientControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -35,7 +34,7 @@ public class CurrencyControllerTest {
     public void shouldReturnQuotes() throws Exception {
         //given
         Quotes quotes = new Quotes("PLN", new Rates(2, 2, 2, 2));
-        when(currencyService.getActualExchangeRates(any())).thenReturn(quotes);
+        when(currencyService.findActualExchangeRates(any())).thenReturn(quotes);
 
         //when and then
         mockMvc.perform(get("/v1/exchangeRates")
@@ -45,14 +44,14 @@ public class CurrencyControllerTest {
                 .andExpect(jsonPath("$.base", is("PLN")))
                 .andExpect(jsonPath("$.rates.PLN", is(2.0)));
 
-        verify(currencyService, times(1)).getActualExchangeRates(any());
+        verify(currencyService, times(1)).findActualExchangeRates(any());
 
     }
 
     @Test
     public void shouldReturnDifferentQuote() throws Exception {
         //given
-        when(currencyService.getExchangeQuote(any(), any(), any())).thenReturn(BigDecimal.TEN);
+        when(currencyService.findExchangeQuote(any(), any(), any())).thenReturn(BigDecimal.TEN);
 
         //when and then
         mockMvc.perform(get("/v1/exchangeQuote")
@@ -63,8 +62,7 @@ public class CurrencyControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", is(10)));
 
-        verify(currencyService, times(1)).getExchangeQuote(any(), any(), any());
+        verify(currencyService, times(1)).findExchangeQuote(any(), any(), any());
     }
-
 
 }

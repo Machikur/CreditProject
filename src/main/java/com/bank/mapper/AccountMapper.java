@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class AccountMapper {
 
-    private PaymentMapper paymentMapper;
+    private final PaymentMapper paymentMapper;
 
     @Autowired
     public AccountMapper(PaymentMapper paymentMapper) {

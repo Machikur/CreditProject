@@ -12,12 +12,15 @@ import java.time.LocalDateTime;
 @Component
 public class EmailCreator {
 
-    @Autowired
-    private AdminConfig adminConfig;
+    @Qualifier("templateEngine")
+    private final TemplateEngine templateEngine;
+    private final AdminConfig adminConfig;
 
     @Autowired
-    @Qualifier("templateEngine")
-    private TemplateEngine templateEngine;
+    public EmailCreator(AdminConfig adminConfig, TemplateEngine templateEngine) {
+        this.adminConfig = adminConfig;
+        this.templateEngine = templateEngine;
+    }
 
     public String buildEmail(Mail mail) {
         Context context = new Context();

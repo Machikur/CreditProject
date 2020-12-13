@@ -39,7 +39,7 @@ public class UserMapperTest {
     public void mapToUserTest() {
         //given
         UserDto userDto = new UserDto(1L, "Michał", "1234", "mail@mail.com"
-                , new ArrayList<>(), new ArrayList<>(), 2000.0, Status.STANDARD, LocalDate.now());
+                , new ArrayList<>(), new ArrayList<>(), 2000.0, Status.STANDARD, LocalDate.now(), true);
 
         //when
         User user = userMapper.mapToUser(userDto);

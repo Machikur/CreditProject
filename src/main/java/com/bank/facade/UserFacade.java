@@ -1,12 +1,12 @@
 package com.bank.facade;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.UserDto;
+import com.bank.exception.OperationException;
 import com.bank.exception.UserNotFoundException;
-import com.bank.exception.UserOperationException;
 import com.bank.mapper.UserMapper;
 import com.bank.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +38,11 @@ public class UserFacade {
         return userMapper.mapToUserDto(user);
     }
 
-    public void deleteUser(Long userId) throws UserNotFoundException, UserOperationException {
+    public void deleteUser(Long userId) throws UserNotFoundException, OperationException {
         User user = userService.findById(userId);
-        if (!checkIfCreditsAndAccountsAreDone(user)) {
-            throw new UserOperationException("Użytkownik ma niespłacone kredyty lub pozostały mu pieniądze na koncie");
+        if (!user.getCredits().stream().allMatch(Credit::isFinished) ||
+                (user.getAccounts().stream().anyMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO) != 0))) {
+            throw new OperationException("Nie można usunąć użytkownika przed spłaceniem kredytów i wyczyszczeniem kont");
         }
         userService.deleteUser(user);
         String message = "Uzytkownik z id: " + userId + ", został usunięty";
@@ -68,16 +69,6 @@ public class UserFacade {
         return user.getAccounts().stream()
                 .map(Account::getCurrency)
                 .collect(Collectors.toSet());
-    }
-
-    private boolean checkIfCreditsAndAccountsAreDone(User user) {
-        if (user.getCredits().stream()
-                .allMatch(Credit::isFinished)) {
-            return user.getAccounts().stream()
-                    .allMatch(a -> a.getCashBalance().compareTo(BigDecimal.ZERO) == 0);
-        } else {
-            return false;
-        }
     }
 
 }

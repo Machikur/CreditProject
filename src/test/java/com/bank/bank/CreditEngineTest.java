@@ -39,9 +39,9 @@ public class CreditEngineTest {
     public void checkAvailableCreditsTypeForAccount() {
 
         //when
-        List<CreditType> shouldBeTheSmallest = creditEngine.checkAvailableCreditsTypeForAccount(Status.STANDARD);
-        List<CreditType> shouldBeMedium = creditEngine.checkAvailableCreditsTypeForAccount(Status.NEW);
-        List<CreditType> shouldBeTheBiggest = creditEngine.checkAvailableCreditsTypeForAccount(Status.VIP);
+        List<CreditType> shouldBeTheSmallest = creditEngine.checkAvailableCreditsTypeByStatus(Status.STANDARD);
+        List<CreditType> shouldBeMedium = creditEngine.checkAvailableCreditsTypeByStatus(Status.NEW);
+        List<CreditType> shouldBeTheBiggest = creditEngine.checkAvailableCreditsTypeByStatus(Status.VIP);
 
         //then
         assertTrue(shouldBeTheBiggest.size() >= shouldBeMedium.size());

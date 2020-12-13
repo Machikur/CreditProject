@@ -33,4 +33,6 @@ public class UserDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate createDate;
 
+    private boolean enable;
+
 }

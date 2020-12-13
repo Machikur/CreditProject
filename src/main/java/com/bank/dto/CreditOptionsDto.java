@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 public class CreditOptionsDto {
 
-    private BigDecimal maxQuote;
+    private final BigDecimal maxQuote;
 
-    private List<CreditType> availableCreditTypes;
+    private final List<CreditType> availableCreditTypes;
 
 }

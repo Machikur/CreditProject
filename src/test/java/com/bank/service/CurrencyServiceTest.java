@@ -1,7 +1,7 @@
 package com.bank.service;
 
-import com.bank.client.Currency;
-import com.bank.client.Quotes;
+import com.bank.client.currency.Currency;
+import com.bank.client.currency.Quotes;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,11 +20,11 @@ public class CurrencyServiceTest {
 
     @Test
     public void shouldReturnDifferentQuotes() {
-        //given and when
-        Quotes quotesEUR = currencyService.getActualExchangeRates(Currency.EUR);
-        Quotes quotesGBP = currencyService.getActualExchangeRates(Currency.GBP);
-        Quotes quotesPLN = currencyService.getActualExchangeRates(Currency.PLN);
-        Quotes quotesUSD = currencyService.getActualExchangeRates(Currency.USD);
+        //given & when
+        Quotes quotesEUR = currencyService.findActualExchangeRates(Currency.EUR);
+        Quotes quotesGBP = currencyService.findActualExchangeRates(Currency.GBP);
+        Quotes quotesPLN = currencyService.findActualExchangeRates(Currency.PLN);
+        Quotes quotesUSD = currencyService.findActualExchangeRates(Currency.USD);
 
         //then
         Assert.assertNotEquals(quotesEUR.getBase(), quotesGBP.getBase());
@@ -35,8 +35,8 @@ public class CurrencyServiceTest {
 
     @Test
     public void shouldReturnNotNullRates() {
-        //given and when
-        Quotes quotes = currencyService.getActualExchangeRates(Currency.PLN);
+        //given & when
+        Quotes quotes = currencyService.findActualExchangeRates(Currency.PLN);
 
         double PLN = quotes.getRates().getRate(Currency.PLN);
         double EUR = quotes.getRates().getRate(Currency.EUR);
@@ -51,7 +51,7 @@ public class CurrencyServiceTest {
     public void shouldCountQuote() {
         //given
         BigDecimal quote = BigDecimal.TEN;
-        BigDecimal quoteAfterChange = currencyService.getExchangeQuote(Currency.PLN, Currency.EUR, quote);
+        BigDecimal quoteAfterChange = currencyService.findExchangeQuote(Currency.PLN, Currency.EUR, quote);
 
 
         //then

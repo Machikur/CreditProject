@@ -1,7 +1,7 @@
 package com.bank.controller;
 
 import com.bank.bank.CreditType;
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.dto.CreditDto;
 import com.bank.dto.CreditOptionsDto;
 import com.bank.facade.CreditFacade;
@@ -21,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -116,9 +115,9 @@ public class CreditControllerTest {
         verify(creditFacade, (times(1))).getOptionsForUser(anyLong());
     }
 
-
     private CreditDto getSimpleCreditDto() {
         return new CreditDto(1L, 1L, BigDecimal.TEN, BigDecimal.ZERO,
                 Currency.PLN, LocalDate.now().plusDays(1), LocalDate.now(), false, new ArrayList<>());
     }
+
 }

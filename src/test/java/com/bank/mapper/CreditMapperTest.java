@@ -1,6 +1,6 @@
 package com.bank.mapper;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.CreditDto;
@@ -29,8 +29,8 @@ public class CreditMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Credit credit = new Credit(1L, user, BigDecimal.TEN, BigDecimal.ZERO,
-                Currency.PLN, LocalDate.now().plusDays(1), LocalDate.now(), false, new ArrayList<>());
+        Credit credit = new Credit(user, BigDecimal.TEN,
+                Currency.PLN, LocalDate.now().plusDays(1));
 
         //when
         CreditDto result = creditMapper.mapToCreditDto(credit);
@@ -38,13 +38,10 @@ public class CreditMapperTest {
         //then
         Assert.assertEquals(result.getAmountPaid(), credit.getAmountPaid());
         Assert.assertEquals(result.getAmountToPay(), credit.getAmountToPay());
-        Assert.assertEquals(result.getCreditId(), credit.getId());
         Assert.assertEquals(result.getCurrency(), credit.getCurrency());
         Assert.assertEquals(result.getFinishTime(), credit.getFinishTime());
         Assert.assertEquals(result.getPayments().size(), credit.getPaymentsFrom().size());
         Assert.assertEquals(result.getUserId(), credit.getUser().getId());
-
-
     }
 
     @Test
@@ -70,8 +67,8 @@ public class CreditMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Credit credit = new Credit(1L, user, BigDecimal.TEN, BigDecimal.ZERO,
-                Currency.PLN, LocalDate.now().plusDays(1), LocalDate.now(), false, new ArrayList<>());
+        Credit credit = new Credit(user, BigDecimal.TEN,
+                Currency.PLN, LocalDate.now().plusDays(1));
         List<Credit> credits = Arrays.asList(credit, credit, credit);
 
         //when
@@ -80,4 +77,5 @@ public class CreditMapperTest {
         //then
         Assert.assertEquals(result.size(), credits.size());
     }
+
 }

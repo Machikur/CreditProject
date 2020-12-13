@@ -1,6 +1,6 @@
 package com.bank.mapper;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.User;
 import com.bank.dto.AccountDto;
@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,8 +27,12 @@ public class AccountMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Account account = new Account(1L, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
-                2222, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        Account account = new Account(user, Currency.EUR);
+        account.setPinCode(1234);
+        account.setCreateTime(LocalDate.now());
+        account.setId(1L);
+        account.setAccountNumber("1234");
+        account.setPinCode(1234);
 
         //when
         AccountDto result = accountMapper.mapToAccountDto(account);
@@ -50,8 +52,7 @@ public class AccountMapperTest {
         //given
         User user = new User();
         user.setId(1L);
-        Account account = new Account(1L, BigDecimal.ZERO, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
-                2222, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
+        Account account = new Account(user, Currency.EUR);
 
         List<Account> accounts = Arrays.asList(account, account, account, account);
 
@@ -60,7 +61,6 @@ public class AccountMapperTest {
 
         //then
         Assert.assertEquals(result.size(), accounts.size());
-
     }
 
 }

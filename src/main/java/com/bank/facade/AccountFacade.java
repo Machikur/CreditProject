@@ -1,11 +1,12 @@
 package com.bank.facade;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.User;
 import com.bank.dto.AccountDto;
 import com.bank.exception.AccountNotFoundException;
 import com.bank.exception.AccountOperationException;
+import com.bank.exception.OperationException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.mapper.AccountMapper;
 import com.bank.service.AccountService;
@@ -25,9 +26,7 @@ import java.util.Random;
 public class AccountFacade {
 
     private final AccountService accountService;
-
     private final UserService userService;
-
     private final AccountMapper accountMapper;
 
     @Autowired
@@ -57,6 +56,7 @@ public class AccountFacade {
     public void depositMoney(Long accountId, BigDecimal quote) throws AccountNotFoundException {
         Account account = accountService.findAccount(accountId);
         account.depositMoney(quote);
+        accountService.saveAccount(account);
     }
 
     public Double getAllCashInCurrency(Long userId, Currency currency) throws UserNotFoundException {
@@ -67,13 +67,14 @@ public class AccountFacade {
                 .sum();
     }
 
-    public void deleteAccount(Long accountId, int pinNumber) throws AccountNotFoundException {
+    public void deleteAccount(Long accountId, int pinNumber) throws AccountNotFoundException, OperationException {
         Account account = accountService.findAccount(accountId);
-        if (account.getPinCode() == pinNumber && account.getCashBalance().compareTo(BigDecimal.ZERO) == 0) {
-            accountService.deleteAccount(account);
-            log.info("Konto o id: {} zostało usunięte",
-                    account.getId());
+        if (account.getPinCode() != pinNumber || account.getCashBalance().compareTo(BigDecimal.ZERO) != 0) {
+            throw new OperationException("Nie można usunąć konta na którym są pieniądze");
         }
+        accountService.deleteAccount(account);
+        log.info("Konto o id: {} zostało usunięte",
+                account.getId());
     }
 
     public void withdrawal(Long accountId, BigDecimal quote) throws AccountOperationException, AccountNotFoundException {

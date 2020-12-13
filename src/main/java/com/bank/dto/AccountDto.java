@@ -1,6 +1,6 @@
 package com.bank.dto;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

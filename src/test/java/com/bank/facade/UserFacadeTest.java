@@ -1,14 +1,15 @@
 package com.bank.facade;
 
 import com.bank.bank.Status;
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.User;
 import com.bank.dto.UserDto;
+import com.bank.exception.AccountNotFoundException;
 import com.bank.exception.AccountOperationException;
+import com.bank.exception.OperationException;
 import com.bank.exception.UserNotFoundException;
-import com.bank.exception.UserOperationException;
-import com.bank.mapper.UserMapper;
+import com.bank.service.AccountService;
 import com.bank.service.UserService;
 import org.junit.After;
 import org.junit.Assert;
@@ -37,6 +38,9 @@ public class UserFacadeTest {
     private UserService userService;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private AccountFacade accountFacade;
 
     private User user;
@@ -60,17 +64,22 @@ public class UserFacadeTest {
     }
 
     @Test
-    public void saveUserTest() {
+    public void saveUserTest() throws UserNotFoundException {
+        UserDto userDto = new UserDto(12L, "Msss", "ssss", "ms@ms.com", new ArrayList<>()
+                , new ArrayList<>(), 200.0, Status.STANDARD, LocalDate.now(), true);
+        //when
+        userFacade.saveUser(userDto);
+        UserDto result = userFacade.findUserByNameAndPassword(userDto.getName(), userDto.getPassword());
         //when & then
-        Assert.assertNotNull(userId);
-        Assert.assertNotNull(user.getName());
-        Assert.assertEquals(user.getMailAddress(), "mail@mail.com");
-        Assert.assertEquals("1234", user.getPassword());
 
+        Assert.assertEquals(userDto.getMailAddress(), result.getMailAddress());
+        Assert.assertEquals(userDto.getMonthlyEarnings(), result.getMonthlyEarnings());
+        Assert.assertEquals(userDto.getName(), result.getName());
+        Assert.assertEquals(userDto.getPassword(), result.getPassword());
     }
 
     @Test
-    public void loadUserTest() throws UserNotFoundException {
+    public void findUserByNameAndPasswordTest() throws UserNotFoundException {
         //when
         UserDto userDto = userFacade.findUserByNameAndPassword(user.getName(), user.getPassword());
 
@@ -82,8 +91,9 @@ public class UserFacadeTest {
         Assert.assertEquals(user.getMonthlyEarnings(), userDto.getMonthlyEarnings());
     }
 
+
     @Test
-    public void deleteUserTest() throws UserNotFoundException, UserOperationException {
+    public void deleteUserTest() throws UserNotFoundException, OperationException {
         //when
         userFacade.deleteUser(userId);
         boolean userIsExist = userService.existById(userId);
@@ -93,14 +103,12 @@ public class UserFacadeTest {
 
     }
 
-    @Test(expected = UserOperationException.class)
-    public void shouldNotDeleteUserTest() throws UserNotFoundException, UserOperationException, AccountOperationException {
-        Account account = new Account(2L, BigDecimal.TEN, user, Currency.EUR, "22 2222 2222 2222 2222 2222 2222",
-                2133, LocalDate.now(), new ArrayList<>(), new ArrayList<>());
-        userService.saveUser(user);
-        user.getAccounts().add(account);
-        userService.saveUser(user);
-        long userId = user.getId();
+    @Test(expected = Exception.class)
+    public void shouldNotDeleteUserTest() throws UserNotFoundException, AccountOperationException, AccountNotFoundException, OperationException {
+        accountFacade.createNewAccount(userId, Currency.EUR);
+        Long accountId = accountFacade.getAccountsOfUser(user.getId()).get(0).getId();
+        accountFacade.depositMoney(accountId, BigDecimal.TEN);
+        Account account = accountService.findAccount(accountId);
 
         //when
         userFacade.deleteUser(userId);
@@ -122,7 +130,7 @@ public class UserFacadeTest {
 
         Long id = user.getId();
         UserDto updateUser = new UserDto(id, "Kamil", "HAAAA", "MILA@sdas.com", new ArrayList<>(), new ArrayList<>(),
-                200.0, Status.STANDARD, LocalDate.now().minusDays(1L));
+                200.0, Status.STANDARD, LocalDate.now().minusDays(1L), true);
 
         //when
         userFacade.updateUser(updateUser);

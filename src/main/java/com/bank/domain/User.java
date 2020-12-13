@@ -34,7 +34,7 @@ public class User {
     @NotBlank
     private String password;
 
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Pattern(regexp = "^[\\w-]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @NotBlank
     private String mailAddress;
 
@@ -59,6 +59,8 @@ public class User {
 
     private LocalDate createDate;
 
+    private boolean enable;
+
     public User(String name, String password, String mailAddress, Double monthlyEarnings) {
         this.name = name;
         this.password = password;
@@ -67,6 +69,7 @@ public class User {
         this.accounts = new ArrayList<>();
         this.credits = new ArrayList<>();
         this.createDate = LocalDate.now();
+        this.enable = true;
         updateStatus();
     }
 

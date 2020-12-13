@@ -1,11 +1,12 @@
 package com.bank.facade;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.User;
 import com.bank.dto.AccountDto;
 import com.bank.exception.AccountNotFoundException;
 import com.bank.exception.AccountOperationException;
+import com.bank.exception.OperationException;
 import com.bank.exception.UserNotFoundException;
 import com.bank.service.AccountService;
 import com.bank.service.UserService;
@@ -37,13 +38,11 @@ public class AccountFacadeTest {
     @Autowired
     private UserService userService;
 
-    private User user;
-
     private long userId;
 
     @Before
     public void createUserForTests() {
-        user = getSimpleUser();
+        User user = getSimpleUser();
         userService.saveUser(user);
         userId = user.getId();
     }
@@ -58,7 +57,7 @@ public class AccountFacadeTest {
     }
 
     @Test
-    public void createAccountTest() throws UserNotFoundException{
+    public void createAccountTest() throws UserNotFoundException {
         //when
         AccountDto result = accountFacade.createNewAccount(userId, Currency.PLN);
 
@@ -164,7 +163,7 @@ public class AccountFacadeTest {
     }
 
     @Test
-    public void deleteUserTest() throws UserNotFoundException, AccountNotFoundException {
+    public void deleteUserTest() throws UserNotFoundException, AccountNotFoundException, OperationException {
         //given
         AccountDto one = accountFacade.createNewAccount(userId, Currency.PLN);
         long accountId = one.getId();
@@ -175,6 +174,24 @@ public class AccountFacadeTest {
 
         //then
         Assert.assertFalse(accountIsExist);
+    }
+
+    @Test(expected = Exception.class)
+    public void shouldNotDeleteUserTest() throws UserNotFoundException, AccountNotFoundException, AccountOperationException, OperationException {
+        //given
+        AccountDto one = accountFacade.createNewAccount(userId, Currency.PLN);
+        long accountId = one.getId();
+
+        //when
+        accountFacade.depositMoney(accountId, BigDecimal.TEN);
+        accountFacade.deleteAccount(accountId, one.getPinCode());
+        boolean accountIsExist = accountService.existById(accountId);
+
+        //then
+        Assert.assertFalse(accountIsExist);
+
+        //cleanUp
+        accountFacade.withdrawal(accountId, BigDecimal.TEN);
     }
 
     private User getSimpleUser() {

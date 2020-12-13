@@ -1,8 +1,7 @@
 package com.bank.domain;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.exception.AccountOperationException;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,7 @@ import java.util.List;
 @Entity
 @Setter
 @Table(name = "ACCOUNT")
-public class Account {
+public class Account implements PaymentDirection {
 
     @Id
     @GeneratedValue
@@ -69,16 +68,16 @@ public class Account {
         this.paymentsTo = new ArrayList<>();
     }
 
+    @Override
     public void depositMoney(BigDecimal quote) {
         cashBalance = cashBalance.add(quote);
     }
 
-    public BigDecimal withdrawMoney(BigDecimal quote) throws AccountOperationException {
+    public void withdrawMoney(BigDecimal quote) throws AccountOperationException {
         if (quote.compareTo(cashBalance) > 0) {
             throw new AccountOperationException("Na koncie nie ma wystraczających środków");
         } else {
             cashBalance = cashBalance.subtract(quote);
-            return quote;
         }
 
     }

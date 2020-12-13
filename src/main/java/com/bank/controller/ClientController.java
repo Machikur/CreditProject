@@ -1,7 +1,7 @@
 package com.bank.controller;
 
-import com.bank.client.Currency;
-import com.bank.client.Quotes;
+import com.bank.client.currency.Currency;
+import com.bank.client.currency.Quotes;
 import com.bank.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,23 +13,23 @@ import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/v1")
-public class CurrencyController {
+public class ClientController {
 
     private final CurrencyService currencyService;
 
     @Autowired
-    public CurrencyController(CurrencyService currencyService) {
+    public ClientController(CurrencyService currencyService) {
         this.currencyService = currencyService;
     }
 
     @GetMapping("/exchangeRates")
     public Quotes getExchangeRates(@RequestParam Currency currency) {
-        return currencyService.getActualExchangeRates(currency);
+        return currencyService.findActualExchangeRates(currency);
     }
 
     @GetMapping("/exchangeQuote")
     public BigDecimal getExchangeQuote(@RequestParam Currency from, @RequestParam Currency to, @RequestParam BigDecimal quote) {
-        return currencyService.getExchangeQuote(from, to, quote);
+        return currencyService.findExchangeQuote(from, to, quote);
     }
 
 }

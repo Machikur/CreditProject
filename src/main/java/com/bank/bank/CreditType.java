@@ -9,13 +9,13 @@ public enum CreditType {
     private static final Map<Integer, CreditType> map;
 
     static {
-        map = new HashMap<Integer, CreditType>();
+        map = new HashMap<>();
         for (CreditType v : CreditType.values()) {
             map.put(v.getDays(), v);
         }
     }
 
-    private int days;
+    private final int days;
 
     CreditType(int days) {
         this.days = days;
@@ -29,4 +29,5 @@ public enum CreditType {
     public int getDays() {
         return days;
     }
+
 }

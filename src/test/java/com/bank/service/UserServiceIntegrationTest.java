@@ -1,6 +1,6 @@
 package com.bank.service;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
@@ -111,7 +111,7 @@ public class UserServiceIntegrationTest {
         userService.deleteUser(user);
 
         //then expect Exception
-        creditService.getCredit(creditId);
+        creditService.findCredit(creditId);
     }
 
 }

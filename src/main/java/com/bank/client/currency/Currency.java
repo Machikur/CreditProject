@@ -1,9 +1,9 @@
-package com.bank.client;
+package com.bank.client.currency;
 
 public enum Currency {
     PLN("PLN"), USD("USD"), EUR("EUR"), GBP("GBP");
 
-    private String desc;
+    private final String desc;
 
     Currency(String desc) {
         this.desc = desc;

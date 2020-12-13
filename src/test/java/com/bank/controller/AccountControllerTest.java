@@ -1,6 +1,6 @@
 package com.bank.controller;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.dto.AccountDto;
 import com.bank.facade.AccountFacade;
 import org.junit.Test;
@@ -20,7 +20,6 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

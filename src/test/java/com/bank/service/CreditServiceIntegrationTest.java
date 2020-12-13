@@ -1,6 +1,6 @@
 package com.bank.service;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import org.junit.Assert;

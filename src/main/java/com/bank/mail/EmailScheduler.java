@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -17,9 +18,6 @@ public class EmailScheduler {
     private final EmailService emailService;
     private final CreditService creditService;
 
-    private final String MESSAGE = "Drogi użytkowniku przypominam że termin spłacenia kredytu upłynął i " +
-            "naliczane są dodatkowe odsetki każdego dnia. Prosimy o niezwłoczne uregulowanie zobowiązań";
-
     @Autowired
     public EmailScheduler(EmailService emailService, CreditService creditService) {
         this.emailService = emailService;
@@ -28,9 +26,11 @@ public class EmailScheduler {
 
     @Scheduled(cron = "0 0 10 * * *")
     public void sendInformationEmail() {
-        List<Credit> creditList = creditService.findAllByFinishTimeBeforeNow();
+        List<Credit> creditList = creditService.findAllByFinishTimeBeforeAndIsFinished(LocalDate.now(), false);
         for (Credit c : creditList) {
             User user = c.getUser();
+            String MESSAGE = "Drogi użytkowniku przypominam że termin spłacenia kredytu upłynął" +
+                    "Prosimy o niezwłoczne uregulowanie zobowiązań";
             emailService.send(new Mail(
                     user.getMailAddress(),
                     user.getName() + " " + user.getName(),

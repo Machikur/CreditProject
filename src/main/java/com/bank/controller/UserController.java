@@ -1,9 +1,9 @@
 package com.bank.controller;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.dto.UserDto;
+import com.bank.exception.OperationException;
 import com.bank.exception.UserNotFoundException;
-import com.bank.exception.UserOperationException;
 import com.bank.facade.UserFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user")
-    public void deleteUser(@RequestParam Long userId) throws UserNotFoundException, UserOperationException {
+    public void deleteUser(@RequestParam Long userId) throws UserNotFoundException, OperationException {
         userFacade.deleteUser(userId);
     }
 

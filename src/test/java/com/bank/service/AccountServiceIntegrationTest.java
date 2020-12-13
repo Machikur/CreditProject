@@ -1,6 +1,6 @@
 package com.bank.service;
 
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Account;
 import com.bank.domain.Payment;
 import com.bank.domain.User;
@@ -67,7 +67,7 @@ public class AccountServiceIntegrationTest {
         account.setPinCode(ACCOUNT_PIN_CODE);
         user.setAccounts(Collections.singletonList(account));
         userService.saveUser(user);
-        Payment payment = new Payment(Currency.EUR, BigDecimal.TEN);
+        Payment payment = new Payment(null, null, null, Currency.EUR, BigDecimal.TEN);
         account.getPaymentsFrom().add(payment);
         payment.setAccountFrom(account);
         paymentService.savePayment(payment);
@@ -114,7 +114,7 @@ public class AccountServiceIntegrationTest {
         account.setPinCode(ACCOUNT_PIN_CODE);
         user.setAccounts(Collections.singletonList(account));
         userService.saveUser(user);
-        Payment payment = new Payment(Currency.EUR, BigDecimal.TEN);
+        Payment payment = new Payment(null, null, null, Currency.EUR, BigDecimal.TEN);
         account.getPaymentsTo().add(payment);
         payment.setAccountFrom(account);
         payment.setAccountTo(account);

@@ -1,16 +1,13 @@
 package com.bank.facade;
 
 import com.bank.bank.CreditType;
-import com.bank.client.Currency;
+import com.bank.client.currency.Currency;
 import com.bank.domain.Credit;
 import com.bank.domain.User;
 import com.bank.dto.AccountDto;
 import com.bank.dto.CreditDto;
 import com.bank.dto.CreditOptionsDto;
-import com.bank.exception.AccountNotFoundException;
-import com.bank.exception.CreditCreateException;
-import com.bank.exception.CreditNotFoundException;
-import com.bank.exception.UserNotFoundException;
+import com.bank.exception.*;
 import com.bank.service.CreditService;
 import com.bank.service.UserService;
 import org.junit.After;
@@ -44,12 +41,11 @@ public class CreditFacadeTest {
     @Autowired
     private AccountFacade accountFacade;
 
-    private User user;
     private long userId;
 
     @Before
     public void createUserForTests() {
-        user = getSimpleUser();
+        User user = getSimpleUser();
         userService.saveUser(user);
         userId = user.getId();
     }
@@ -76,8 +72,21 @@ public class CreditFacadeTest {
         Assert.assertFalse(creditList.isEmpty());
     }
 
-    @Test
-    public void deleteCreditTestShouldNotDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException {
+    @Test(expected = CreditCreateException.class)
+    public void createCreditForUserExpectExceptionTest() throws UserNotFoundException, AccountNotFoundException, CreditCreateException {
+        //given
+        AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
+
+        //when
+        creditFacade.createCreditForUser(userId, accountDto.getId(), BigDecimal.valueOf(100000), CreditType.WEEKLY);
+        List<CreditDto> creditList = creditFacade.getCreditsForUser(userId);
+
+        //then
+        Assert.assertFalse(creditList.isEmpty());
+    }
+
+    @Test(expected = Exception.class)
+    public void deleteCreditTestShouldNotDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
         //given
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         creditFacade.createCreditForUser(userId, accountDto.getId(), BigDecimal.valueOf(1000), CreditType.WEEKLY);
@@ -86,30 +95,30 @@ public class CreditFacadeTest {
         //when
         creditFacade.deleteCredit(testCredit.getCreditId());
 
-        Credit credit = creditService.getCredit(testCredit.getCreditId());
+        Credit credit = creditService.findCredit(testCredit.getCreditId());
 
         //then
         Assert.assertNotNull(credit);
         Assert.assertTrue(BigDecimal.valueOf(1000).compareTo(credit.getAmountToPay()) < 0);
     }
 
-    @Test(expected = CreditNotFoundException.class)
-    public void deleteCreditTestShouldDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException {
+    @Test(expected = Exception.class)
+    public void deleteCreditTestShouldDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
         //given
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         creditFacade.createCreditForUser(userId, accountDto.getId(), BigDecimal.valueOf(1000), CreditType.WEEKLY);
         CreditDto testCredit = creditFacade.getCreditsForUser(userId).get(0);
-        Credit credit = creditService.getCredit(testCredit.getCreditId());
+        Credit credit = creditService.findCredit(testCredit.getCreditId());
         long creditId = credit.getId();
-        //when
 
-        credit.setFinished(true);
-        creditService.saveCredit(credit);
+        //when
         creditFacade.deleteCredit(creditId);
 
-        Credit creditNotExists = creditService.getCredit(creditId);
-
         //then expect exception
+
+        //cleanUp
+        credit.setFinished(true);
+        creditService.saveCredit(credit);
     }
 
     @Test

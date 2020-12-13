@@ -1,14 +1,14 @@
 package com.bank.service;
 
-import com.bank.client.Currency;
-import com.bank.client.CurrencyClient;
-import com.bank.client.Quotes;
+import com.bank.client.currency.Currency;
+import com.bank.client.currency.CurrencyClient;
+import com.bank.client.currency.Quotes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
-@Component
+@Service
 public class CurrencyService {
 
     private final CurrencyClient currencyClient;
@@ -18,15 +18,15 @@ public class CurrencyService {
         this.currencyClient = currencyClient;
     }
 
-    public Quotes getActualExchangeRates(Currency currency) {
+    public Quotes findActualExchangeRates(Currency currency) {
         return currencyClient.getActualExchangeRates(currency);
     }
 
-    public BigDecimal getExchangeQuote(Currency from, Currency to, BigDecimal quote) {
-        return quote.multiply(BigDecimal.valueOf(getExchangeRate(from, to)));
+    public BigDecimal findExchangeQuote(Currency from, Currency to, BigDecimal quote) {
+        return quote.multiply(BigDecimal.valueOf(findExchangeRate(from, to)));
     }
 
-    private double getExchangeRate(Currency from, Currency to) {
+    private double findExchangeRate(Currency from, Currency to) {
         if (from.equals(to)) {
             return 1.00;
         }
