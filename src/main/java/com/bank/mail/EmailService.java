@@ -24,9 +24,9 @@ public class EmailService {
     public void send(Mail mail) {
         try {
             javaMailSender.send(createMimeMessage(mail));
-            log.info("Email has been sent");
+            log.info("Email został wysłany");
         } catch (MailException s) {
-            log.error("Failed to process email sending {}", s.getMessage(), s);
+            log.error("Błąd wysyłania, przyczyna:{}", s.getMessage(), s);
         }
     }
 

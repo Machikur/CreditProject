@@ -32,7 +32,6 @@ public class UserValidator {
     public Object validateUser(ProceedingJoinPoint proceedingJoinPoint, Long id) throws Throwable {
         ValidateType validateType = getAnnotation(proceedingJoinPoint).value();
         User user;
-        Object result = proceedingJoinPoint.proceed();
         switch (validateType) {
             case ACCOUNT:
                 user = accountService.findAccount(id).getUser();
@@ -46,16 +45,15 @@ public class UserValidator {
             default:
                 throw new OperationException("Nieznana opcja");
         }
-        if (!user.isEnable()) {
-            throw new OperationException("Użytkownik został zablokowany");
+        if (user == null || !user.isEnable()) {
+            throw new OperationException("Użytkownik został zablokowany lub nie istnieje");
         }
-        return result;
+        return proceedingJoinPoint.proceed();
     }
 
     private ToValidate getAnnotation(ProceedingJoinPoint proceedingJoinPoint) throws NoSuchMethodException {
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         Class<?> annotationClass = proceedingJoinPoint.getTarget().getClass();
-        //ToValidate annotation = annotationClass.getAnnotation(ToValidate.class);
         ToValidate annotation = proceedingJoinPoint.getTarget().getClass().getMethod(signature.getName(), signature.getMethod().getParameterTypes()).getAnnotation(ToValidate.class);
         return annotation != null ? annotation : annotationClass.getAnnotation(ToValidate.class);
     }

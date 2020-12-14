@@ -25,7 +25,7 @@ public class CreditMapperTest {
     private CreditMapper creditMapper;
 
     @Test
-    public void shouldReturnCreditDto() {
+    public void shouldReturnCreditDtoTest() {
         //given
         User user = new User();
         user.setId(1L);
@@ -45,7 +45,7 @@ public class CreditMapperTest {
     }
 
     @Test
-    public void shouldReturnCredit() {
+    public void shouldReturnCreditTest() {
         //given
         User user = new User();
         user.setId(1L);
@@ -63,7 +63,7 @@ public class CreditMapperTest {
     }
 
     @Test
-    public void shouldReturnListOfCreditDto() {
+    public void shouldReturnListOfCreditDtoTest() {
         //given
         User user = new User();
         user.setId(1L);

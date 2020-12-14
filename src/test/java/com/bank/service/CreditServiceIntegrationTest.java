@@ -29,7 +29,7 @@ public class CreditServiceIntegrationTest {
     private CreditService creditService;
 
     @Test
-    public void shouldNotDeleteUser() {
+    public void shouldNotDeleteUserTest() {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Credit credit = new Credit(user, BigDecimal.TEN, Currency.EUR, LocalDate.now().plusDays(1));
@@ -49,7 +49,7 @@ public class CreditServiceIntegrationTest {
     }
 
     @Test
-    public void shouldRefreshUser() {
+    public void shouldRefreshUserTest() {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Credit credit = new Credit(user, BigDecimal.TEN, Currency.EUR, LocalDate.now().plusDays(1));

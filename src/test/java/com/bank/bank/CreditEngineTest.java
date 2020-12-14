@@ -36,7 +36,7 @@ public class CreditEngineTest {
     }
 
     @Test
-    public void checkAvailableCreditsTypeForAccount() {
+    public void checkAvailableCreditsTypeForAccountTest() {
 
         //when
         List<CreditType> shouldBeTheSmallest = creditEngine.checkAvailableCreditsTypeByStatus(Status.STANDARD);

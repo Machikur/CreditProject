@@ -35,7 +35,7 @@ public class PaymentControllerTest {
     private PaymentFacade paymentFacade;
 
     @Test
-    public void shouldCreatePaymentDto() throws Exception {
+    public void shouldCreatePaymentDtoTest() throws Exception {
         //given
         PaymentDto paymentDto = getSimplePayment();
         when(paymentFacade.makePayment(any(PaymentDto.class), anyInt())).thenReturn(paymentDto);
@@ -58,7 +58,7 @@ public class PaymentControllerTest {
     }
 
     @Test
-    public void shouldReturnUsersListOfPaymentDto() throws Exception {
+    public void shouldReturnUsersListOfPaymentDtoTest() throws Exception {
         //given
         PaymentDto paymentDto = getSimplePayment();
         when(paymentFacade.getPaymentListOfUser(anyLong())).thenReturn(Collections.singletonList(paymentDto));
@@ -77,7 +77,7 @@ public class PaymentControllerTest {
     }
 
     @Test
-    public void shouldReturnEmptyListOfPaymentDto() throws Exception {
+    public void shouldReturnEmptyListOfPaymentDtoTest() throws Exception {
         //given
         when(paymentFacade.getPaymentListOfAccount(anyString())).thenReturn(new ArrayList<>());
 

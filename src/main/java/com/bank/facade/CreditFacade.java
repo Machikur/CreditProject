@@ -61,8 +61,8 @@ public class CreditFacade {
         user.getCredits().add(credit);
         account.depositMoney(quote);
         userService.saveUser(user);
-        log.info("Stworzono nowy kredyt dla uzytkownika {} o wartości {}",
-                user.getName(), quote);
+        log.info("Stworzono nowy kredyt dla uzytkownika {} o wartości {} {}",
+                user.getName(), quote, credit.getCurrency());
     }
 
     public List<CreditDto> getCreditsForUser(Long userId) throws UserNotFoundException {
@@ -76,7 +76,7 @@ public class CreditFacade {
             throw new OperationException("Nie można usunąć niezakończonego kredytu");
         }
         creditService.deleteCredit(credit);
-        log.info("Usunieto kredyt użytkownika {}  o numerze id {}",
+        log.info("Usunieto kredyt użytkownika {} o numerze id {}",
                 credit.getUser().getName(), creditId);
     }
 

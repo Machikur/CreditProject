@@ -35,7 +35,7 @@ public class EmailSchedulerTest {
     private CreditService creditService;
 
     @Test
-    public void shouldSendMessage() {
+    public void shouldSendMessageTest() {
         //given
         Credit credit = getSimpleCredit();
         when(creditService.findAllByFinishTimeBeforeAndIsFinished(any(), anyBoolean())).thenReturn(Collections.singletonList(credit));
@@ -46,7 +46,7 @@ public class EmailSchedulerTest {
     }
 
     @Test
-    public void shouldSendFiveMessages() {
+    public void shouldSendFiveMessagesTest() {
         //given
         List<Credit> creditList = Arrays.asList(getSimpleCredit(),
                 getSimpleCredit(), getSimpleCredit(), getSimpleCredit(), getSimpleCredit());
@@ -60,7 +60,7 @@ public class EmailSchedulerTest {
     }
 
     @Test
-    public void shouldNotSendMessages() {
+    public void shouldNotSendMessagesTest() {
         //given
         List<Credit> creditList = new ArrayList<>();
 

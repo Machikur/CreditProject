@@ -36,7 +36,7 @@ public class PaymentMapperTest {
     private UserService userService;
 
     @Test
-    public void shouldReturnPaymentDto() {
+    public void shouldReturnPaymentDtoTest() {
         //given
         Account accountOne = new Account();
         accountOne.setId(1L);
@@ -78,7 +78,7 @@ public class PaymentMapperTest {
     }
 
     @Test
-    public void shouldReturnSameSizeList() {
+    public void shouldReturnSameSizeListTest() {
         //given
         Account accountOne = new Account();
         accountOne.setId(1L);

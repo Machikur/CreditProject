@@ -86,7 +86,7 @@ public class CreditFacadeTest {
     }
 
     @Test(expected = Exception.class)
-    public void deleteCreditTestShouldNotDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
+    public void deleteCreditTestShouldNotDeleteTest() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
         //given
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         creditFacade.createCreditForUser(userId, accountDto.getId(), BigDecimal.valueOf(1000), CreditType.WEEKLY);
@@ -103,7 +103,7 @@ public class CreditFacadeTest {
     }
 
     @Test(expected = Exception.class)
-    public void deleteCreditTestShouldDelete() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
+    public void deleteCreditTestShouldDeleteTest() throws UserNotFoundException, AccountNotFoundException, CreditCreateException, CreditNotFoundException, OperationException {
         //given
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         creditFacade.createCreditForUser(userId, accountDto.getId(), BigDecimal.valueOf(1000), CreditType.WEEKLY);

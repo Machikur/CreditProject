@@ -38,7 +38,7 @@ public class UserServiceIntegrationTest {
     private CreditService creditService;
 
     @Test
-    public void shouldSaveUserAndAccount() {
+    public void shouldSaveUserAndAccountTest() {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -59,7 +59,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = AccountNotFoundException.class)
-    public void shouldDeleteUserAndAccount() throws AccountNotFoundException {
+    public void shouldDeleteUserAndAccountTest() throws AccountNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -79,7 +79,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void shouldSaveUserAndCredit() {
+    public void shouldSaveUserAndCreditTest() {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Credit credit = new Credit(user, BigDecimal.TEN, Currency.EUR, LocalDate.now().plusDays(1));
@@ -99,7 +99,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test(expected = CreditNotFoundException.class)
-    public void shouldDeleteCredit() throws CreditNotFoundException {
+    public void shouldDeleteCreditTest() throws CreditNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Credit credit = new Credit(user, BigDecimal.TEN, Currency.EUR, LocalDate.now().plusDays(1));

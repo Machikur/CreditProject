@@ -19,7 +19,7 @@ public class CurrencyServiceTest {
     private CurrencyService currencyService;
 
     @Test
-    public void shouldReturnDifferentQuotes() {
+    public void shouldReturnDifferentQuotesTest() {
         //given & when
         Quotes quotesEUR = currencyService.findActualExchangeRates(Currency.EUR);
         Quotes quotesGBP = currencyService.findActualExchangeRates(Currency.GBP);
@@ -34,7 +34,7 @@ public class CurrencyServiceTest {
     }
 
     @Test
-    public void shouldReturnNotNullRates() {
+    public void shouldReturnNotNullRatesTest() {
         //given & when
         Quotes quotes = currencyService.findActualExchangeRates(Currency.PLN);
 
@@ -48,7 +48,7 @@ public class CurrencyServiceTest {
     }
 
     @Test
-    public void shouldCountQuote() {
+    public void shouldCountQuoteTest() {
         //given
         BigDecimal quote = BigDecimal.TEN;
         BigDecimal quoteAfterChange = currencyService.findExchangeQuote(Currency.PLN, Currency.EUR, quote);

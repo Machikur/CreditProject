@@ -43,7 +43,7 @@ public class AccountFacade {
         account.setPinCode(pinCreator());
         user.getAccounts().add(account);
         accountService.saveAccount(account);
-        log.info("Konto o id: {}, dla użytkownika {}   zostało utworzone",
+        log.info("Konto o id: {}, dla użytkownika {} zostało utworzone",
                 account.getId(), user.getName());
         return accountMapper.mapToAccountDto(account);
     }
@@ -57,6 +57,9 @@ public class AccountFacade {
         Account account = accountService.findAccount(accountId);
         account.depositMoney(quote);
         accountService.saveAccount(account);
+        log.info("Wpłacono {} {} na konto o id: {}", quote, account.getCurrency(), account.getId());
+
+
     }
 
     public Double getAllCashInCurrency(Long userId, Currency currency) throws UserNotFoundException {
@@ -73,14 +76,14 @@ public class AccountFacade {
             throw new OperationException("Nie można usunąć konta na którym są pieniądze");
         }
         accountService.deleteAccount(account);
-        log.info("Konto o id: {} zostało usunięte",
-                account.getId());
+        log.info("Konto o id: {} zostało usunięte", account.getId());
     }
 
     public void withdrawal(Long accountId, BigDecimal quote) throws AccountOperationException, AccountNotFoundException {
         Account account = accountService.findAccount(accountId);
         account.withdrawMoney(quote);
         accountService.saveAccount(account);
+        log.info("Wypłacono {} {} z konta o id: {}", quote, account.getCurrency(), account.getId());
     }
 
     private String accountNumberCreator() {

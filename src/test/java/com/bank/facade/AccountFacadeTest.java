@@ -126,7 +126,7 @@ public class AccountFacadeTest {
     }
 
     @Test(expected = AccountOperationException.class)
-    public void withdrawMoneyTestShouldThrowException() throws UserNotFoundException, AccountNotFoundException, AccountOperationException {
+    public void withdrawMoneyTestShouldThrowExceptionTest() throws UserNotFoundException, AccountNotFoundException, AccountOperationException {
         //given
         AccountDto accountDto = accountFacade.createNewAccount(userId, Currency.PLN);
         Long accountId = accountDto.getId();

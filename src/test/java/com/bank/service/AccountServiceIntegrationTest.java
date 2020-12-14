@@ -36,7 +36,7 @@ public class AccountServiceIntegrationTest {
     private PaymentService paymentService;
 
     @Test
-    public void shouldNotDeleteUser() throws UserNotFoundException {
+    public void shouldNotDeleteUserTest() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -59,7 +59,7 @@ public class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void shouldNotDeletePayment() throws UserNotFoundException {
+    public void shouldNotDeletePaymentTest() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -84,7 +84,7 @@ public class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void shouldSaveUserChanges() throws UserNotFoundException {
+    public void shouldSaveUserChangesTest() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);
@@ -106,7 +106,7 @@ public class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void shouldSavePaymentChanges() throws UserNotFoundException {
+    public void shouldSavePaymentChangesTest() throws UserNotFoundException {
         //given
         User user = new User(USER_NAME, USER_LAST_NAME, USER_EMAIL, USER_EARNINGS);
         Account account = new Account(user, Currency.EUR);

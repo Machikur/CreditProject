@@ -79,7 +79,8 @@ public class PaymentFacade {
         }
         BigDecimal quoteAfterExchange = currencyService.findExchangeQuote(from.getCurrency(), to.getCurrency(), quote);
         to.depositMoney(quoteAfterExchange);
-        log.info("Wykonano płatnośc z id: {} do id: {} , o wartości {}", from.getId(), to.getId(), quote);
+        log.info("Wykonano płatnośc z konta id: {} do odbiorcy z id: {}, o wartości {} {}", from.getId(),
+                to.getId(), quote, from.getCurrency());
         return payment;
     }
 

@@ -45,8 +45,7 @@ public class UserFacade {
             throw new OperationException("Nie można usunąć użytkownika przed spłaceniem kredytów i wyczyszczeniem kont");
         }
         userService.deleteUser(user);
-        String message = "Uzytkownik z id: " + userId + ", został usunięty";
-        log.info(message);
+        log.info("Uzytkownik {} został usunięty", user.getName());
     }
 
 

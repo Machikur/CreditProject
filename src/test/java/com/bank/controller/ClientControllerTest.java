@@ -31,7 +31,7 @@ public class ClientControllerTest {
     private CurrencyService currencyService;
 
     @Test
-    public void shouldReturnQuotes() throws Exception {
+    public void shouldReturnQuotesTest() throws Exception {
         //given
         Quotes quotes = new Quotes("PLN", new Rates(2, 2, 2, 2));
         when(currencyService.findActualExchangeRates(any())).thenReturn(quotes);
@@ -49,7 +49,7 @@ public class ClientControllerTest {
     }
 
     @Test
-    public void shouldReturnDifferentQuote() throws Exception {
+    public void shouldReturnDifferentQuoteTest() throws Exception {
         //given
         when(currencyService.findExchangeQuote(any(), any(), any())).thenReturn(BigDecimal.TEN);
 

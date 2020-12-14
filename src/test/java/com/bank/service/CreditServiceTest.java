@@ -26,7 +26,7 @@ public class CreditServiceTest {
     private UserService userService;
 
     @Test
-    public void findAllByFinishTimeBeforeNowTest() throws UserNotFoundException {
+    public void findAllByFinishTimeBeforeNowTestTest() throws UserNotFoundException {
         //given
         User user = new User("Man", "1234", "mail@mail.com", 2000.0);
         userService.saveUser(user);

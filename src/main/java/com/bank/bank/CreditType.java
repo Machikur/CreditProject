@@ -22,7 +22,6 @@ public enum CreditType {
     }
 
     public static CreditType findByKey(int i) {
-
         return map.get(i);
     }
 
